@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Calify</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{background:#060b15;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:15px;line-height:1.6}
+
+/* ── Animations ── */
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes right{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes xleft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes sheet{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes over{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes pulse-glow{0%,100%{opacity:.4}50%{opacity:1}}
+
+.au{animation:up .24s cubic-bezier(.22,1,.36,1) both}
+.ar{animation:right .24s cubic-bezier(.22,1,.36,1) both}
+.al{animation:xleft .24s cubic-bezier(.22,1,.36,1) both}
+.d1{animation-delay:.03s}.d2{animation-delay:.06s}.d3{animation-delay:.09s}
+.d4{animation-delay:.12s}.d5{animation-delay:.15s}.d6{animation-delay:.19s}
+.shake{animation:shake .3s ease}.pop{animation:pop .24s cubic-bezier(.34,1.56,.64,1) both}
+
+/* ── Surfaces — flat, minimal borders ── */
+.card{background:#0e1623;border:1px solid rgba(255,255,255,.05);border-radius:14px}
+.card-accent{background:#0e1623;border:1px solid rgba(45,212,191,.12);border-radius:14px}
+.surface{background:rgba(255,255,255,.025);border-radius:10px}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;font-weight:700;border-radius:10px;transition:all .15s;cursor:pointer;border:none;font-family:inherit;letter-spacing:-.01em;gap:6px}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:#0d9488;color:#fff;padding:14px 22px;font-size:15px}
+.btn-primary:hover{background:#0f766e;transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,148,136,.35)}
+.btn-secondary{background:transparent;color:#2dd4bf;border:1px solid rgba(45,212,191,.25);padding:12px 20px;font-size:14px}
+.btn-secondary:hover{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.45)}
+.btn-ghost{background:transparent;color:#334155;padding:10px 16px;font-size:14px;font-weight:600}
+.btn-ghost:hover{color:#64748b}
+.btn-sm{padding:8px 13px;font-size:12px;border-radius:8px}
+
+/* ── Choices ── */
+.choice{width:100%;text-align:left;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px 15px;font-size:14px;font-weight:500;color:#94a3b8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .14s;font-family:inherit}
+.choice:hover{border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.05);color:#e2e8f0}
+.choice.sel{border-color:#2dd4bf;background:rgba(45,212,191,.08);color:#fff;font-weight:600}
+
+/* ── Inputs ── */
+input[type=text],input[type=email],input[type=password]{
+  font-family:inherit;font-size:14px;border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;padding:12px 14px;width:100%;outline:none;
+  transition:border-color .15s,box-shadow .15s;background:rgba(255,255,255,.03);color:#e2e8f0}
+input::placeholder{color:#1e293b}
+input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
+
+/* ── Progress ── */
+.prog-bar{height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:#2dd4bf;border-radius:2px;transition:width .45s cubic-bezier(.22,1,.36,1)}
+
+/* ── Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:over .18s ease both}
+.modal{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:#0e1623;border:1px solid rgba(255,255,255,.08);border-radius:20px 20px 0 0;animation:sheet .28s cubic-bezier(.22,1,.36,1) both}
+
+/* ── Action links ── */
+.alink{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:8px;padding:6px 10px;text-decoration:none;transition:all .13s;white-space:nowrap}
+.alink-teal{color:#2dd4bf;background:rgba(45,212,191,.08)}
+.alink-teal:hover{background:rgba(45,212,191,.14)}
+.alink-blue{color:#38bdf8;background:rgba(56,189,248,.08)}
+.alink-blue:hover{background:rgba(56,189,248,.14)}
+.alink-purple{color:#a78bfa;background:rgba(167,139,250,.08)}
+.alink-purple:hover{background:rgba(167,139,250,.14)}
+.alink-orange{color:#fb923c;background:rgba(251,146,60,.08)}
+.alink-orange:hover{background:rgba(251,146,60,.14)}
+
+/* ── Dropdown ── */
+.dd-menu{position:absolute;right:0;top:calc(100%+6px);background:#111927;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;z-index:100;min-width:150px;box-shadow:0 16px 48px rgba(0,0,0,.6);animation:up .16s cubic-bezier(.22,1,.36,1) both}
+.dd-item{width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;border:none;background:none;font-family:inherit;color:#cbd5e1;text-align:left}
+.dd-item:hover{background:rgba(255,255,255,.05)}
+.dd-item.active{color:#2dd4bf;background:rgba(45,212,191,.07)}
+
+/* ── Sidebar layout ── */
+.app-shell{display:flex;flex-direction:column;min-height:100vh}
+.app-body{display:flex;flex:1}
+.sidebar{display:none;width:260px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.05);padding:24px 16px;flex-direction:column;gap:4px;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.main-col{flex:1;min-width:0;padding:28px 28px;max-width:780px}
+
+@media(min-width:900px){
+  .sidebar{display:flex}
+  .main-col{padding:36px 44px}
+}
+@media(min-width:1200px){
+  .main-col{max-width:860px}
+  .sidebar{width:280px}
+}
+
+/* ── Results grid ── */
+.results-grid{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:1050px){
+  .results-grid{grid-template-columns:1fr 300px}
+}
+
+/* ── Sidebar nav items ── */
+.snav{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all .13s;font-size:13px;font-weight:600;color:#334155;border:none;background:none;font-family:inherit;width:100%;text-align:left}
+.snav:hover{background:rgba(255,255,255,.04);color:#64748b}
+.snav.active{background:rgba(45,212,191,.09);color:#2dd4bf}
+.snav-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+/* ── Gradient text ── */
+.grad{background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-gold{background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── Mobile bottom bar ── */
+.mobile-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;padding:8px 8px calc(8px + env(safe-area-inset-bottom));gap:4px;border-top:1px solid rgba(255,255,255,.05);background:rgba(6,11,21,.96);backdrop-filter:blur(16px)}
+@media(min-width:900px){.mobile-bar{display:none}}
+.mobile-bar-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border:none;background:none;cursor:pointer;font-family:inherit;border-radius:9px;transition:background .13s}
+.mobile-bar-btn:hover,.mobile-bar-btn.active{background:rgba(45,212,191,.08)}
+.mobile-bar-btn span:first-child{font-size:18px}
+.mobile-bar-btn span:last-child{font-size:10px;font-weight:700;color:#1e293b;letter-spacing:.02em}
+.mobile-bar-btn.active span:last-child{color:#2dd4bf}
+
+/* ── Mobile padding for bottom bar ── */
+.has-mobile-bar{padding-bottom:80px}
+@media(min-width:900px){.has-mobile-bar{padding-bottom:0}}
+
+/* ── Print ── */
+@media print{
+  .no-print{display:none!important}.printable{display:block!important}
+  body{background:#fff;color:#000;font-size:11pt}
+  .card,.card-accent,.surface{box-shadow:none!important;border:1px solid #ddd!important;background:#fff!important}
+  .sidebar,.mobile-bar{display:none!important}
+  .main-col{padding:0!important;max-width:100%!important}
+}
+.printable{display:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useCallback,useRef}=React;
+
+// ── AUTH ──────────────────────────────────────────────────────
+function hash(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h=h&h;}return h.toString(36);}
+const LS={
+  users:()=>{try{return JSON.parse(localStorage.getItem("cnav_u")||"[]")}catch{return[]}},
+  setUsers:u=>localStorage.setItem("cnav_u",JSON.stringify(u)),
+  me:()=>{try{return JSON.parse(localStorage.getItem("cnav_me")||"null")}catch{return null}},
+  setMe:u=>localStorage.setItem("cnav_me",JSON.stringify(u)),
+  clearMe:()=>localStorage.removeItem("cnav_me"),
+  sessions:uid=>{try{const a=JSON.parse(localStorage.getItem("cnav_s")||"{}");return a[uid]||[]}catch{return[]}},
+  addSession:(uid,n)=>{try{const a=JSON.parse(localStorage.getItem("cnav_s")||"{}");const t=new Date().toISOString().slice(0,10);const s=a[uid]||[];const i=s.findIndex(x=>x.date===t);if(i>=0)s[i].count+=n;else s.unshift({date:t,count:n,id:Date.now()});a[uid]=s.slice(0,30);localStorage.setItem("cnav_s",JSON.stringify(a));}catch{}},
+  todayCount:uid=>{const t=new Date().toISOString().slice(0,10);return(LS.sessions(uid).find(s=>s.date===t)||{count:0}).count;},
+  totalCount:uid=>LS.sessions(uid).reduce((a,s)=>a+s.count,0),
+};
+function doSignup({name,email,password}){
+  const users=LS.users();
+  if(users.find(u=>u.email.toLowerCase()===email.toLowerCase()))return{err:"Email already registered."};
+  const u={id:Date.now().toString(36),name,email:email.toLowerCase(),ph:hash(password)};
+  LS.setUsers([...users,u]);const me={id:u.id,name:u.name,email:u.email};LS.setMe(me);return{user:me};
+}
+function doLogin({email,password}){
+  const u=LS.users().find(u=>u.email.toLowerCase()===email.toLowerCase());
+  if(!u)return{err:"No account with that email."};
+  if(u.ph!==hash(password))return{err:"Incorrect password."};
+  const me={id:u.id,name:u.name,email:u.email};LS.setMe(me);return{user:me};
+}
+function pwScore(pw){if(!pw)return 0;let s=0;if(pw.length>=8)s++;if(pw.length>=12)s++;if(/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;return Math.min(s,4);}
+const SC=["#ef4444","#f97316","#eab308","#22c55e"];
+const SL={en:["Too short","Weak","Fair","Strong"],es:["Muy corta","Débil","Regular","Fuerte"]};
+
+// ── ZIP / COUNTY ──────────────────────────────────────────────
+const ZC={"940":"San Francisco","941":"San Francisco","942":"Alameda","943":"Alameda","944":"Alameda","945":"Alameda","946":"Alameda","947":"Contra Costa","948":"Contra Costa","950":"Santa Clara","951":"Santa Clara","952":"Santa Clara","953":"Santa Clara"};
+const getCounty=zip=>(!zip||zip.length<3)?null:ZC[zip.slice(0,3)]||null;
+const CL={
+  "San Francisco":{calfresh:{url:"https://www.mybenefitscalwin.org/",phone:"415-558-2227",office:"SF HSA, 170 Otis St"},medi:{url:"https://www.sfhsa.org/services/health-disability/medical-benefits",phone:"415-355-5200"},wic:{url:"https://www.sfdph.org/dph/comupg/oprograms/NutritionSvcs/wic/default.asp",phone:"415-575-5780"},liheap:{url:"https://www.sfhsa.org/services/housing-and-utilities/utility-assistance",phone:"415-557-5000"}},
+  "Alameda":{calfresh:{url:"https://www.mybenefitscalwin.org/",phone:"888-999-4772",office:"Alameda ACSSA, 1111 Jackson St"},medi:{url:"https://www.alamedasocialservices.org/",phone:"888-999-4772"},wic:{url:"https://acphd.org/wic/",phone:"510-618-2000"},liheap:{url:"https://www.acgov.org/css/",phone:"510-667-7500"}},
+  "Contra Costa":{calfresh:{url:"https://www.mybenefitscalwin.org/",phone:"877-410-8803",office:"Contra Costa EHSD, 40 Douglas Dr"},medi:{url:"https://ehsd.org/benefits/health-care/",phone:"877-410-8803"},wic:{url:"https://cchealth.org/wic/",phone:"925-313-6254"},liheap:{url:"https://communityservicescc.org/energy-assistance/",phone:"925-229-2310"}},
+  "Santa Clara":{calfresh:{url:"https://www.mybenefitscalwin.org/",phone:"408-758-3800",office:"Santa Clara SSA, 333 W Julian St"},medi:{url:"https://ssa.sccgov.org/",phone:"408-758-3800"},wic:{url:"https://www.sccgov.org/sites/opa/Pages/wic.aspx",phone:"408-792-5000"},liheap:{url:"https://www.siliconvalleycommunityservices.org/",phone:"408-279-7676"}},
+};
+const getCountyLinks=zip=>{const c=getCounty(zip);return c&&CL[c]?{county:c,links:CL[c]}:null;};
+
+// ── TRANSLATIONS ──────────────────────────────────────────────
+const LANGS=[{code:"en",flag:"🇺🇸",label:"English"},{code:"es",flag:"🇲🇽",label:"Español"}];
+const TR={
+en:{
+  name:"Calify",tagline:"California benefits, simplified.",
+  badge:"Free · Private · 2 min",
+  title:"Find out which California benefits you qualify for — in 2 minutes",
+  sub:"Millions of Californians miss out on food, healthcare, and cash assistance every year simply because they don't know they qualify. Calify asks 9 simple questions and tells you exactly which programs are available to you — with direct links to apply.",
+  what_is:"What is Calify?",
+  what_body:"Calify is a free eligibility screener for California government assistance programs. It checks your household against 10 programs — including CalFresh (food), Medi-Cal (health), CalWORKs (cash), and utility discounts — and shows only the ones that match your situation. No sign-up, no data stored, nothing sent anywhere.",
+  priv:"🔒 Your answers never leave your device. Nothing is stored or sent.",
+  immig:"🛡️ Using these programs does not affect immigration status.",
+  immig_link:"USCIS confirms →",free:"✓ Completely free. No account needed.",
+  start:"Check My Eligibility →",nav_cta:"I'm a community navigator →",
+  programs:"Programs we screen for",stats_label:"Bay Area impact",
+  how_h_title:"How it works",
+  how_h_1:"Answer 9 short questions about your household — size, income, kids, housing.",
+  how_h_2:"Calify instantly matches you to programs you likely qualify for.",
+  how_h_3:"Get a direct apply link, phone number, or local office address — no searching required.",
+  how_h_note:"Under 2 minutes. Nothing is stored or sent to anyone.",
+  how_n_title:"How Navigator Mode works",
+  how_n_1:"Sit with the household and run through the questions together.",
+  how_n_2:"Review their results and help them pick next steps.",
+  how_n_3:"Tap \"Log This Household\" to track your impact.",
+  how_n_note:"Their answers never leave the device.",
+  step:"Step {n} of {total}",back:"Back",skip:"Skip",results_btn:"See Results →",
+  q_size:"How many people are in your household?",q_size_h:"Everyone you buy and prepare food with, including yourself.",
+  q_income:"What's your total monthly household income?",q_income_h:"Before taxes. All sources: wages, tips, child support, benefits.",
+  q_kids:"Do you have children under age 5?",q_kids_n:"How many children under 5?",
+  q_preg:"Is anyone pregnant or gave birth in the last 6 months?",
+  q_senior:"Is anyone 60 or older in your household?",
+  q_dis:"Does anyone in your household have a disability?",
+  q_house:"Does your household rent or own?",
+  q_tax:"Does anyone file taxes — or want to?",q_tax_h:"You can file with an ITIN. No SSN required.",
+  q_zip:"What's your ZIP code?",q_zip_h:"Shows your county's specific offices and phone numbers.",
+  yes:"Yes",no:"No",rent:"We rent",own:"We own / buying",unstable:"No stable housing",
+  tax_y:"Yes, or I want to",tax_n:"No",tax_u:"Not sure",
+  sizes:["Just me","2 people","3 people","4 people","5 people","6 or more"],
+  incomes:["Under $1,000","$1,000–$1,500","$1,500–$2,000","$2,000–$2,500","$2,500–$3,000","$3,000–$4,000","$4,000–$5,000","Over $5,000"],
+  counts:["1","2","3","4 or more"],
+  res_title:"Your Results",res_sub:"Matched to your household. County offices shown where available.",
+  est:"Est. value",why:"Why you qualify",next:"How to apply",
+  imm_toggle:"Immigration note",
+  no_res:"No clear matches — but you may still qualify.",no_res_sub:"Eligibility rules are complex. A free navigator can check more deeply.",
+  more:"More programs coming soon",more_sub:"Section 8, Head Start, Denti-Cal, WIOA job training, legal aid.",
+  food:"Food",health:"Health",cash:"Cash & Taxes",utils:"Utilities",family:"Family",
+  pc_title:"These programs won't hurt your immigration case.",
+  pc_body:"Medi-Cal, CalFresh, WIC, LIHEAP do NOT count as \"public charge.\" Applies to green card applicants, DACA holders, undocumented residents. The 2019 rule was struck down.",
+  pc_link:"Read USCIS official guidance →",
+  hoff_title:"Free help applying",hoff_sub:"Bay Area organizations guide you through every application — no cost.",
+  call:"Call",web:"Website",dial:"Or dial 2-1-1 — free, 24/7, bilingual.",
+  print:"Print / Save PDF",share:"Share",restart:"Start Over",back_res:"← Back",
+  login:"Log in",signup:"Sign up",logout:"Log out",
+  login_sub:"Welcome back.",signup_sub:"Track your navigator impact across sessions.",
+  name_l:"Name",email_l:"Email",pw_l:"Password",conf_l:"Confirm password",
+  login_btn:"Log In",signup_btn:"Create Account",
+  to_signup:"No account? Sign up →",to_login:"Have an account? Log in →",
+  or:"or",guest:"Continue without account",
+  pw_short:"Password must be 8+ characters.",pw_mismatch:"Passwords don't match.",
+  auth_priv:"We only store your name and email. Household answers are never linked to your account.",
+  auth_demo:"⚠ Demo only — production needs a real backend.",
+  nav_title:"Navigator Mode",nav_sub:"Help households find the benefits they've earned.",
+  nav_impact:"Your impact",nav_today:"Today",nav_total:"All time",
+  nav_new:"Start New Screening →",nav_log:"Log This Household",nav_logged:"Logged ✓",
+  nav_share:"Share the Tool",nav_history:"Recent sessions",nav_no_hist:"No sessions yet.",
+  nav_hh:"households",nav_guest_title:"Save your impact",
+  nav_guest_sub:"Create a free account to track households across sessions.",
+  sh_title:"Share This Tool",sh_sub:"Help neighbors find free benefits.",
+  sh_qr:"Scan to open on any phone",sh_url:"cabeneficios.org",
+  sh_places:"Post at: churches, schools, clinics, food banks, WIC offices, laundromats, libraries.",
+  sh_head:"Know your rights. Get what you've earned.",
+  sh_body:"Free benefits screening. English & Spanish. Confidential. 2 minutes.",
+  copy:"Copy Link",copied:"Copied!",print_fly:"Print Flyer",
+  foot:"Not legal, tax, or immigration advice · Not affiliated with any government agency",
+  nav_mode:"Navigator Mode",hh_mode:"Household Mode",
+  county_r:"Your {county} County resources",
+  sidebar_household:"For Households",sidebar_navigator:"For Navigators",sidebar_share:"Share Tool",
+},
+es:{
+  name:"Calify",tagline:"Beneficios de California, simplificados.",
+  badge:"Gratis · Privado · 2 min",
+  title:"Descubre a qué beneficios de California tienes derecho — en 2 minutos",
+  sub:"Millones de californianos no reciben ayuda para comida, salud y dinero simplemente porque no saben que califican. Calify hace 9 preguntas sencillas y te dice exactamente qué programas tienes disponibles — con enlaces directos para solicitar.",
+  what_is:"¿Qué es Calify?",
+  what_body:"Calify es una herramienta gratuita que evalúa tu elegibilidad para programas de asistencia del gobierno de California. Revisa tu hogar contra 10 programas — incluyendo CalFresh (comida), Medi-Cal (salud), CalWORKs (efectivo) y descuentos en servicios — y te muestra solo los que aplican a tu situación. Sin registro, sin datos guardados, sin envíos.",
+  priv:"🔒 Tus respuestas nunca salen de tu dispositivo. Nada se guarda ni envía.",
+  immig:"🛡️ Usar estos programas no afecta el estatus migratorio.",
+  immig_link:"USCIS lo confirma →",free:"✓ Completamente gratis. Sin cuenta necesaria.",
+  start:"Ver Mi Elegibilidad →",nav_cta:"Soy promotor/a comunitario/a →",
+  programs:"Programas que evaluamos",stats_label:"Impacto en el Área de la Bahía",
+  how_h_title:"Cómo funciona",
+  how_h_1:"Responde 9 preguntas cortas sobre tu hogar — tamaño, ingresos, hijos, vivienda.",
+  how_h_2:"Calify te empareja al instante con los programas para los que probablemente calificas.",
+  how_h_3:"Recibe un enlace directo, teléfono o dirección de oficina local — sin buscar.",
+  how_h_note:"Menos de 2 minutos. Nada se guarda ni se envía a nadie.",
+  how_n_title:"Cómo funciona el Modo Navegador",
+  how_n_1:"Siéntate con la familia y haz las preguntas juntos.",
+  how_n_2:"Revisa los resultados y ayúdales a elegir próximos pasos.",
+  how_n_3:"Toca \"Registrar Esta Familia\" para rastrear tu impacto.",
+  how_n_note:"Sus respuestas nunca salen del dispositivo.",
+  step:"Paso {n} de {total}",back:"Atrás",skip:"Omitir",results_btn:"Ver Resultados →",
+  q_size:"¿Cuántas personas viven en tu hogar?",q_size_h:"Todos con quienes compras y preparas comida.",
+  q_income:"¿Cuál es el ingreso mensual total de tu hogar?",q_income_h:"Antes de impuestos. Todas las fuentes.",
+  q_kids:"¿Hay niños menores de 5 años en tu hogar?",q_kids_n:"¿Cuántos niños menores de 5?",
+  q_preg:"¿Alguien está embarazada o dio a luz en los últimos 6 meses?",
+  q_senior:"¿Alguien en tu hogar tiene 60 años o más?",
+  q_dis:"¿Alguien en tu hogar tiene una discapacidad?",
+  q_house:"¿Tu hogar renta o es dueño?",
+  q_tax:"¿Alguien presenta impuestos — o quiere hacerlo?",q_tax_h:"Puedes declarar con un ITIN. Sin número de Seguro Social.",
+  q_zip:"¿Cuál es tu código postal?",q_zip_h:"Para mostrar la oficina de tu condado y recursos locales.",
+  yes:"Sí",no:"No",rent:"Rentamos",own:"Somos dueños / comprando",unstable:"Sin vivienda estable",
+  tax_y:"Sí, o quiero hacerlo",tax_n:"No",tax_u:"No sé",
+  sizes:["Solo yo","2 personas","3 personas","4 personas","5 personas","6 o más"],
+  incomes:["Menos de $1,000","$1,000–$1,500","$1,500–$2,000","$2,000–$2,500","$2,500–$3,000","$3,000–$4,000","$4,000–$5,000","Más de $5,000"],
+  counts:["1","2","3","4 o más"],
+  res_title:"Tus Resultados",res_sub:"Coinciden con tu hogar. Se muestran oficinas de tu condado.",
+  est:"Valor est.",why:"Por qué calificas",next:"Cómo solicitar",
+  imm_toggle:"Nota de inmigración",
+  no_res:"Sin coincidencias claras — pero aún puedes calificar.",no_res_sub:"La elegibilidad es compleja. Un navegador gratuito puede ayudar.",
+  more:"Más programas próximamente",more_sub:"Sección 8, Head Start, Denti-Cal, capacitación WIOA, ayuda legal.",
+  food:"Comida",health:"Salud",cash:"Dinero e Impuestos",utils:"Servicios Públicos",family:"Familia",
+  pc_title:"Estos programas no dañarán tu caso de inmigración.",
+  pc_body:"Medi-Cal, CalFresh, WIC, LIHEAP NO cuentan como \"carga pública\". Aplica a solicitantes de residencia, DACA e indocumentados. La regla de 2019 fue eliminada.",
+  pc_link:"Lee la guía oficial de USCIS →",
+  hoff_title:"Ayuda gratis para solicitar",hoff_sub:"Organizaciones del Área de la Bahía — sin costo.",
+  call:"Llamar",web:"Sitio web",dial:"O marca 2-1-1 — gratis, 24/7, bilingüe.",
+  print:"Imprimir / Guardar PDF",share:"Compartir",restart:"Comenzar de Nuevo",back_res:"← Volver",
+  login:"Iniciar sesión",signup:"Registrarse",logout:"Cerrar sesión",
+  login_sub:"Bienvenido/a.",signup_sub:"Rastrea tu impacto entre sesiones.",
+  name_l:"Nombre",email_l:"Correo",pw_l:"Contraseña",conf_l:"Confirmar contraseña",
+  login_btn:"Iniciar Sesión",signup_btn:"Crear Cuenta",
+  to_signup:"¿Sin cuenta? Regístrate →",to_login:"¿Tienes cuenta? Inicia sesión →",
+  or:"o",guest:"Continuar sin cuenta",
+  pw_short:"Contraseña mínimo 8 caracteres.",pw_mismatch:"Las contraseñas no coinciden.",
+  auth_priv:"Solo guardamos tu nombre y correo. Las respuestas nunca se vinculan a tu cuenta.",
+  auth_demo:"⚠ Solo demo — producción necesita un servidor real.",
+  nav_title:"Modo Navegador",nav_sub:"Ayuda a familias a encontrar los beneficios que se merecen.",
+  nav_impact:"Tu impacto",nav_today:"Hoy",nav_total:"Total",
+  nav_new:"Comenzar Nueva Evaluación →",nav_log:"Registrar Esta Familia",nav_logged:"Registrada ✓",
+  nav_share:"Compartir la Herramienta",nav_history:"Sesiones recientes",nav_no_hist:"Sin sesiones aún.",
+  nav_hh:"familias",nav_guest_title:"Guarda tu impacto",
+  nav_guest_sub:"Crea una cuenta gratuita para rastrear familias entre sesiones.",
+  sh_title:"Comparte Esta Herramienta",sh_sub:"Ayuda a tus vecinos a encontrar beneficios gratuitos.",
+  sh_qr:"Escanea para abrir en cualquier teléfono",sh_url:"cabeneficios.org",
+  sh_places:"Publica en: iglesias, escuelas, clínicas, bancos de alimentos, WIC, lavanderías, bibliotecas.",
+  sh_head:"Conoce tus derechos. Obtén lo que te mereces.",
+  sh_body:"Evaluación gratuita de beneficios. Inglés y español. Confidencial. 2 minutos.",
+  copy:"Copiar Enlace",copied:"¡Copiado!",print_fly:"Imprimir Volante",
+  foot:"No es asesoramiento legal ni de inmigración · No afiliado con ninguna agencia del gobierno",
+  nav_mode:"Modo Navegador",hh_mode:"Modo Familia",
+  county_r:"Recursos Condado {county}",
+  sidebar_household:"Para Familias",sidebar_navigator:"Para Navegadores",sidebar_share:"Compartir",
+}};
+const t=(l,k,v={})=>{let s=TR[l]?.[k]??TR.en?.[k]??k;for(const[a,b]of Object.entries(v))s=s.replaceAll(`{${a}}`,b);return s;};
+
+// ── ELIGIBILITY ───────────────────────────────────────────────
+const fpl=n=>1255+(Math.min(Math.max(parseInt(n)||1,1),8)-1)*449;
+const MID=[700,1250,1750,2250,2750,3500,4500,6000];
+const MAX=[999,1500,2000,2500,3000,4000,5000,9999];
+const mi=i=>MID[i??0]??0;
+const mx=i=>MAX[i??0]??9999;
+const CAT_COLOR={food:"#34d399",health:"#38bdf8",cash:"#fbbf24",utils:"#a78bfa",family:"#f472b6"};
+const CAT_ORDER=["food","health","cash","utils","family"];
+const catLabel=(l,c)=>({food:t(l,"food"),health:t(l,"health"),cash:t(l,"cash"),utils:t(l,"utils"),family:t(l,"family")})[c]||c;
+
+const PROGS=[
+{id:"calfresh",cat:"food",icon:"🥦",
+ name:{en:"CalFresh (SNAP)",es:"CalFresh (SNAP)"},
+ desc:{en:"Monthly grocery benefits on an EBT card — accepted at most grocery stores and farmers markets.",es:"Beneficios mensuales en tarjeta EBT — aceptada en supermercados y mercados de agricultores."},
+ est:{en:a=>{const v=[291,535,766,973,1155,1386];return`~$${v[Math.min(a.size,6)-1]||1386}/mo`;},es:a=>{const v=[291,535,766,973,1155,1386];return`~$${v[Math.min(a.size,6)-1]||1386}/mes`;}},
+ why:{en:a=>`Your household of ${a.size} may be under the income limit (200% FPL = $${(fpl(a.size)*2).toLocaleString()}/month).`,es:a=>`Tu hogar de ${a.size} puede estar bajo el límite de ingresos (200% FPL = $${(fpl(a.size)*2).toLocaleString()}/mes).`},
+ apply:{online:{url:"https://www.mybenefitscalwin.org/",en:"Apply at MyBenefitsCalWIN.org",es:"Solicita en MyBenefitsCalWIN.org"},phone:{number:"1-877-847-3663",label:{en:"CalFresh Helpline",es:"Línea CalFresh"}},countyKey:"calfresh"},
+ imm:{en:"Citizens and most legal immigrants qualify. Undocumented individuals may qualify for CFAP with the same benefits.",es:"Ciudadanos y la mayoría de inmigrantes documentados califican. Indocumentados pueden calificar para CFAP."},
+ src:"https://www.cdss.ca.gov/calfresh",ok(a){return mx(a.incomeIdx)<=fpl(a.size)*2.12;}},
+
+{id:"wic",cat:"food",icon:"🍼",
+ name:{en:"WIC",es:"WIC"},
+ desc:{en:"Monthly food benefits and nutrition support for pregnant women, new moms, and children under 5.",es:"Beneficios mensuales y apoyo nutricional para embarazadas, nuevas mamás y niños menores de 5 años."},
+ est:{en:()=>"~$100–$500/month",es:()=>"~$100–$500/mes"},
+ why:{en:a=>a.pregnant?"Someone is pregnant or recently gave birth.":"Your household has children under 5 who qualify.",es:a=>a.pregnant?"Alguien está embarazada o dio a luz recientemente.":"Tu hogar tiene niños menores de 5 años que califican."},
+ apply:{online:{url:"https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx",en:"Find a WIC clinic",es:"Encuentra una clínica WIC"},phone:{number:"1-888-942-9675",label:{en:"WIC Hotline (bilingual)",es:"Línea WIC (bilingüe)"}},countyKey:"wic"},
+ imm:{en:"Available regardless of immigration status — no documentation required.",es:"Disponible sin importar el estatus migratorio — no se requieren documentos."},
+ src:"https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx",ok(a){return(a.pregnant||a.hasKids)&&mx(a.incomeIdx)<=fpl(a.size)*1.95;}},
+
+{id:"medic",cat:"health",icon:"🏥",
+ name:{en:"Medi-Cal",es:"Medi-Cal"},
+ desc:{en:"Free or low-cost coverage: doctor, prescriptions, dental, vision, mental health. All income-eligible adults covered regardless of immigration status.",es:"Cobertura gratuita o de bajo costo: médico, medicamentos, dental, visión, salud mental. Todos los adultos elegibles cubiertos."},
+ est:{en:()=>"$0–$20/month (most pay $0)",es:()=>"$0–$20/mes (la mayoría paga $0)"},
+ why:{en:a=>a.hasKids?`Children qualify up to 266% FPL ($${Math.round(fpl(a.size)*2.66).toLocaleString()}/mo).`:a.pregnant?`Pregnant individuals qualify up to 213% FPL — all prenatal care covered.`:`Adult limit is 138% FPL ($${Math.round(fpl(a.size)*1.38).toLocaleString()}/mo).`,es:a=>a.hasKids?`Niños califican hasta 266% del FPL ($${Math.round(fpl(a.size)*2.66).toLocaleString()}/mes).`:a.pregnant?`Embarazadas califican hasta 213% del FPL — toda la atención prenatal cubierta.`:`Límite adulto: 138% del FPL ($${Math.round(fpl(a.size)*1.38).toLocaleString()}/mes).`},
+ apply:{online:{url:"https://www.coveredca.com/apply/",en:"Apply at CoveredCA.com",es:"Solicita en CoveredCA.com"},phone:{number:"1-800-300-1506",label:{en:"Covered CA (bilingual)",es:"Covered CA (bilingüe)"}},countyKey:"medi"},
+ imm:{en:"As of January 2024, Medi-Cal covers ALL income-eligible adults regardless of immigration status, including undocumented adults.",es:"Desde enero de 2024, Medi-Cal cubre a TODOS los adultos elegibles sin importar el estatus migratorio, incluyendo adultos indocumentados."},
+ src:"https://www.dhcs.ca.gov/services/medi-cal/",ok(a){const i=mx(a.incomeIdx);if(a.hasKids)return i<=fpl(a.size)*2.76;if(a.pregnant)return i<=fpl(a.size)*2.23;return i<=fpl(a.size)*1.48;}},
+
+{id:"eitc",cat:"cash",icon:"💰",
+ name:{en:"CalEITC + EITC + Young Child Credit",es:"CalEITC + EITC + Crédito por Hijo Menor"},
+ desc:{en:"Up to $12,000+ back at tax time — even if you owe nothing. ITIN filers qualify for CA credits.",es:"Hasta $12,000+ de regreso — aunque no debas nada. Personas con ITIN califican para créditos de CA."},
+ est:{en:a=>{const k=a.kidsCount>=0?a.kidsCount+1:0;const b=k>=3?11000:k>=2?9000:k>=1?6000:2000;return`Up to $${b.toLocaleString()}`;},es:a=>{const k=a.kidsCount>=0?a.kidsCount+1:0;const b=k>=3?11000:k>=2?9000:k>=1?6000:2000;return`Hasta $${b.toLocaleString()}`;}},
+ why:{en:()=>"Your income range may qualify for CalEITC (up to $3,647), federal EITC (up to $7,430 with 3+ kids), and Young Child Tax Credit ($1,117/child under 6).",es:()=>"Tu ingreso puede calificar para CalEITC (hasta $3,647), EITC federal (hasta $7,430 con 3+ hijos) y Crédito por Hijo Menor ($1,117/niño menor de 6)."},
+ apply:{online:{url:"https://irs.treasury.gov/freetaxprep/",en:"Find free VITA tax prep",es:"Encontrar ayuda VITA gratis"},phone:{number:"2-1-1",label:{en:"2-1-1 (free VITA referral)",es:"2-1-1 (referencia VITA gratis)"}},extra:{en:a=>a.zip?{url:`https://irs.treasury.gov/freetaxprep/#?zip=${a.zip}`,label:`VITA near ${a.zip}`}:null,es:a=>a.zip?{url:`https://irs.treasury.gov/freetaxprep/#?zip=${a.zip}`,label:`VITA cerca de ${a.zip}`}:null}},
+ imm:{en:"ITIN holders qualify for CalEITC and Young Child Tax Credit. Federal EITC requires a Social Security number.",es:"ITIN califica para CalEITC y Crédito por Hijo Menor. El EITC federal requiere SSN."},
+ src:"https://www.ftb.ca.gov/file/personal/credits/california-earned-income-tax-credit.html",ok(a){return a.taxes!==false&&mi(a.incomeIdx)<=3500;}},
+
+{id:"liheap",cat:"utils",icon:"⚡",
+ name:{en:"LIHEAP Energy Assistance",es:"Asistencia de Energía LIHEAP"},
+ desc:{en:"Seasonal help paying electricity or gas. Emergency assistance within 48 hours if you have a shutoff notice.",es:"Ayuda estacional para pagar electricidad o gas. Asistencia de emergencia en 48 horas con aviso de corte."},
+ est:{en:()=>"$200–$1,000/year",es:()=>"$200–$1,000/año"},
+ why:{en:a=>`Your income may be under LIHEAP's limit (~$${Math.round(fpl(a.size)*2.2).toLocaleString()}/month).`,es:a=>`Tu ingreso puede estar bajo el límite de LIHEAP (~$${Math.round(fpl(a.size)*2.2).toLocaleString()}/mes).`},
+ apply:{online:{url:"https://www.csd.ca.gov/Pages/LIHEAPHome.aspx",en:"Learn about LIHEAP",es:"Conoce el programa LIHEAP"},phone:{number:"2-1-1",label:{en:"2-1-1 (LIHEAP referral)",es:"2-1-1 (referencia LIHEAP)"}},countyKey:"liheap"},
+ imm:{en:"Available to documented immigrants and citizens. Call 2-1-1 for local eligibility.",es:"Para inmigrantes documentados y ciudadanos. Llama al 2-1-1 para confirmar elegibilidad local."},
+ src:"https://www.csd.ca.gov/Pages/LIHEAPHome.aspx",ok(a){return mx(a.incomeIdx)<=fpl(a.size)*2.1;}},
+
+{id:"care",cat:"utils",icon:"💡",
+ name:{en:"CARE & FERA Discounts",es:"Descuentos CARE y FERA"},
+ desc:{en:"Permanent 20–35% off your monthly PG&E, SCE, or SoCalGas bill. 5-minute application.",es:"Descuento permanente del 20–35% en PG&E, SCE o SoCalGas. La solicitud toma 5 minutos."},
+ est:{en:a=>`~$${Math.round(mi(a.incomeIdx)*.07)}/month saved`,es:a=>`~$${Math.round(mi(a.incomeIdx)*.07)}/mes ahorrados`},
+ why:{en:()=>"Your income may qualify for CARE (≤200% FPL) or FERA (200–250% FPL for 3+ person households).",es:()=>"Tu ingreso puede calificar para CARE (≤200% FPL) o FERA (200–250% FPL para hogares de 3+)."},
+ apply:{online:{url:"https://www.pge.com/en_US/residential/save-energy-money/help-paying-your-bill/longer-term-assistance/care/care.page",en:"Apply at PG&E",es:"Solicita en PG&E"},phone:{number:"1-800-743-5000",label:{en:"PG&E CARE line",es:"Línea CARE de PG&E"}},altOnline:{url:"https://www.sce.com/residential/rebates-savings/CARE",en:"SCE customers →",es:"Clientes de SCE →"}},
+ imm:{en:"No immigration status verification required.",es:"No se requiere verificación del estatus migratorio."},
+ src:"https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",ok(a){return mx(a.incomeIdx)<=fpl(a.size)*2.6;}},
+
+{id:"lifeline",cat:"utils",icon:"📱",
+ name:{en:"Lifeline Phone / Internet",es:"Teléfono / Internet Lifeline"},
+ desc:{en:"Up to $9.25/month off your phone or internet bill. May also qualify for a free phone.",es:"Hasta $9.25/mes de descuento en teléfono o internet. También puedes calificar para un teléfono gratis."},
+ est:{en:()=>"$9–$34/month off",es:()=>"$9–$34/mes de descuento"},
+ why:{en:a=>`Income may be ≤135% FPL ($${Math.round(fpl(a.size)*1.35).toLocaleString()}/month). Also auto-qualifies if anyone receives Medi-Cal, CalFresh, or SSI.`,es:a=>`Ingreso puede ser ≤135% del FPL ($${Math.round(fpl(a.size)*1.35).toLocaleString()}/mes). También calificas si alguien recibe Medi-Cal, CalFresh o SSI.`},
+ apply:{online:{url:"https://www.lifelinesupport.org/do-i-qualify/",en:"Check eligibility & apply",es:"Verificar elegibilidad"},phone:{number:"1-800-234-9473",label:{en:"Lifeline Support Center",es:"Centro de Soporte Lifeline"}}},
+ imm:{en:"Available to all residents — no immigration check.",es:"Disponible para todos los residentes — sin verificación de inmigración."},
+ src:"https://www.fcc.gov/consumers/guides/lifeline-support-affordable-communications",ok(a){return mx(a.incomeIdx)<=fpl(a.size)*1.5;}},
+
+{id:"calworks",cat:"family",icon:"👨‍👩‍👧",
+ name:{en:"CalWORKs",es:"CalWORKs"},
+ desc:{en:"Monthly cash assistance for families with children. Also covers job training, childcare, and transportation so you can return to work.",es:"Asistencia mensual en efectivo para familias con hijos. También cubre capacitación laboral, cuidado infantil y transporte."},
+ est:{en:a=>{const v=[672,1040,1272,1480,1682,1880];return`~$${v[Math.min(a.size,6)-1]||1880}/mo`;},es:a=>{const v=[672,1040,1272,1480,1682,1880];return`~$${v[Math.min(a.size,6)-1]||1880}/mes`;}},
+ why:{en:a=>`Families with children under 18 and income below ~$${Math.round(fpl(a.size)*0.8).toLocaleString()}/month may qualify.`,es:a=>`Familias con hijos menores de 18 años e ingresos inferiores a ~$${Math.round(fpl(a.size)*0.8).toLocaleString()}/mes pueden calificar.`},
+ apply:{online:{url:"https://www.mybenefitscalwin.org/",en:"Apply at MyBenefitsCalWIN.org",es:"Solicita en MyBenefitsCalWIN.org"},phone:{number:"1-877-847-3663",label:{en:"CalWORKs Helpline",es:"Línea CalWORKs"}},countyKey:"calfresh"},
+ imm:{en:"Requires citizenship or qualified immigration status for the parent. US-born children always qualify regardless of parent's status.",es:"Requiere ciudadanía o estatus migratorio calificado para el padre. Los hijos nacidos en EE.UU. siempre califican sin importar el estatus del padre."},
+ src:"https://www.cdss.ca.gov/calworks",ok(a){return a.hasKids&&mx(a.incomeIdx)<=fpl(a.size)*0.9;}},
+
+{id:"ssi",cat:"cash",icon:"♿",
+ name:{en:"SSI / SSP",es:"SSI / SSP"},
+ desc:{en:"Monthly federal + state cash for people who are 65+, blind, or have a disability. California's supplement (SSP) makes it one of the highest SSI rates in the US.",es:"Efectivo federal y estatal para personas de 65+, ciegas o con discapacidad. El suplemento de California (SSP) es uno de los más altos del país."},
+ est:{en:()=>"~$1,134–$1,183/month (individual)",es:()=>"~$1,134–$1,183/mes (individual)"},
+ why:{en:a=>a.senior?"Age 65+ may qualify for SSI regardless of work history.":a.dis?"A qualifying disability may entitle your household to SSI/SSP.":"Low income + age 65 or disability is the core requirement.",es:a=>a.senior?"65+ puede calificar para SSI sin importar historial de trabajo.":a.dis?"Una discapacidad calificante puede dar derecho a SSI/SSP.":"Ingreso bajo + 65 años o discapacidad es el requisito principal."},
+ apply:{online:{url:"https://www.ssa.gov/ssi/",en:"Learn & apply at SSA.gov",es:"Aprende y solicita en SSA.gov"},phone:{number:"1-800-772-1213",label:{en:"Social Security (bilingual)",es:"Seguro Social (bilingüe)"}}},
+ imm:{en:"US citizens and certain legal immigrants (LPRs, refugees, asylees) qualify. Undocumented individuals do not qualify for federal SSI, but may qualify for state-only Cash Assistance Program for Immigrants (CAPI).",es:"Ciudadanos y ciertos inmigrantes legales califican. Indocumentados no califican para SSI federal, pero pueden calificar para CAPI (Programa Estatal de California)."},
+ src:"https://www.ssa.gov/ssi/",ok(a){return(a.senior||a.dis)&&mx(a.incomeIdx)<=fpl(a.size)*1.3;}},
+
+{id:"coveredca",cat:"health",icon:"🩺",
+ name:{en:"Covered California",es:"Covered California"},
+ desc:{en:"Subsidized health insurance for people who earn too much for Medi-Cal but can't afford full-price plans. Many pay $0–$50/month after subsidies.",es:"Seguro de salud subsidiado para quienes ganan demasiado para Medi-Cal pero no pueden pagar planes a precio completo. Muchos pagan $0–$50/mes."},
+ est:{en:a=>`$0–$100/month after subsidies (income ${Math.round(fpl(a.size)*1.38/100)*100}–${Math.round(fpl(a.size)*4/100)*100}/mo)`,es:a=>`$0–$100/mes después de subsidios (ingreso ${Math.round(fpl(a.size)*1.38/100)*100}–${Math.round(fpl(a.size)*4/100)*100}/mes)`},
+ why:{en:a=>`Income between 138–400% FPL ($${Math.round(fpl(a.size)*1.38).toLocaleString()}–$${Math.round(fpl(a.size)*4).toLocaleString()}/mo) qualifies for subsidies.`,es:a=>`Ingreso entre 138–400% del FPL ($${Math.round(fpl(a.size)*1.38).toLocaleString()}–$${Math.round(fpl(a.size)*4).toLocaleString()}/mes) califica para subsidios.`},
+ apply:{online:{url:"https://www.coveredca.com/apply/",en:"Apply at CoveredCA.com",es:"Solicita en CoveredCA.com"},phone:{number:"1-800-300-1506",label:{en:"Covered CA (bilingual)",es:"Covered CA (bilingüe)"}}},
+ imm:{en:"US citizens, legal permanent residents, and DACA recipients qualify. Undocumented immigrants do not qualify for Covered CA plans but do qualify for Medi-Cal.",es:"Ciudadanos, residentes permanentes y DACA califican. Indocumentados no califican para Covered CA pero sí para Medi-Cal."},
+ src:"https://www.coveredca.com/",ok(a){const i=mi(a.incomeIdx);return i>fpl(a.size)*1.38&&i<=fpl(a.size)*4;}}
+];
+
+const PARTNERS=[
+{emoji:"📞",name:{en:"2-1-1 Bay Area",es:"2-1-1 Área de la Bahía"},desc:{en:"Free 24/7 referrals in English & Spanish.",es:"Referencias gratuitas 24/7 en inglés y español."},phone:"2-1-1",web:"https://211bayarea.org"},
+{emoji:"🧾",name:{en:"United Way — Free Tax Prep (VITA)",es:"United Way — Impuestos Gratis (VITA)"},desc:{en:"Free filing under $67K. ITIN filers welcome.",es:"Impuestos gratis bajo $67K. Se aceptan ITIN."},phone:"415-808-4300",web:"https://uwba.org/freetaxprep"},
+{emoji:"🤝",name:{en:"Catholic Charities East Bay",es:"Caridades Católicas del Este de la Bahía"},desc:{en:"Benefits navigation, ITIN taxes, emergency help. Bilingual.",es:"Navegación de beneficios, impuestos con ITIN, ayuda de emergencia. Bilingüe."},phone:"510-768-3100",web:"https://www.catholiccharitiesdoc.org"},
+{emoji:"🏛️",name:{en:"Alameda County Social Services",es:"Servicios Sociales — Condado de Alameda"},desc:{en:"Apply for CalFresh, Medi-Cal, and more. Walk-ins Mon–Fri.",es:"Solicita CalFresh, Medi-Cal y más. Sin cita lunes–viernes."},phone:"888-999-4772",web:"https://www.alamedasocialservices.org"},
+{emoji:"🌉",name:{en:"SF Human Services Agency",es:"Agencia de Servicios Humanos de SF"},desc:{en:"Benefits and emergency support for SF residents.",es:"Beneficios y apoyo de emergencia para residentes de SF."},phone:"415-557-5000",web:"https://www.sfhsa.org"},
+];
+
+function screen(a){return PROGS.filter(p=>{try{return p.ok(a);}catch{return false;}});}
+
+// ── SHARED: DROPDOWN ──────────────────────────────────────────
+function Dropdown({trigger,children}){
+  const[open,setOpen]=useState(false);
+  const ref=useRef(null);
+  useEffect(()=>{const h=e=>{if(ref.current&&!ref.current.contains(e.target))setOpen(false);};document.addEventListener("mousedown",h);return()=>document.removeEventListener("mousedown",h);},[]);
+  return(
+    <div className="relative" ref={ref} style={{display:"inline-block"}}>
+      <div onClick={()=>setOpen(o=>!o)}>{trigger(open)}</div>
+      {open&&<div className="dd-menu" onClick={()=>setOpen(false)}>{children}</div>}
+    </div>
+  );
+}
+
+// ── LANG DROPDOWN ─────────────────────────────────────────────
+function LangDropdown({lang,setLang}){
+  const cur=LANGS.find(l=>l.code===lang)||LANGS[0];
+  return(
+    <Dropdown trigger={open=>(
+      <button className="flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-all" style={{border:"1px solid rgba(45,212,191,.25)",background:"rgba(45,212,191,.06)",color:"#2dd4bf",fontWeight:700,fontSize:12,fontFamily:"inherit",cursor:"pointer"}}>
+        <span style={{fontSize:14}}>{cur.flag}</span><span>{cur.label}</span><span style={{fontSize:10,opacity:.7}}>{open?"▴":"▾"}</span>
+      </button>
+    )}>
+      {LANGS.map(l=>(
+        <button key={l.code} onClick={()=>setLang(l.code)} className={`dd-item${l.code===lang?" active":""}`}>
+          <span style={{fontSize:16}}>{l.flag}</span><span>{l.label}</span>
+          {l.code===lang&&<span style={{marginLeft:"auto",color:"#2dd4bf",fontSize:11}}>✓</span>}
+        </button>
+      ))}
+    </Dropdown>
+  );
+}
+
+// ── USER MENU ─────────────────────────────────────────────────
+function UserMenu({lang,user,onLogout}){
+  const ini=user.name.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
+  return(
+    <Dropdown trigger={open=>(
+      <button className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 transition-all" style={{border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",cursor:"pointer"}}>
+        <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black" style={{background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff"}}>{ini}</div>
+        <span className="text-xs font-semibold max-w-[72px] truncate" style={{color:"#e2e8f0"}}>{user.name.split(" ")[0]}</span>
+        <span className="text-xs" style={{color:"#475569"}}>{open?"▴":"▾"}</span>
+      </button>
+    )}>
+      <div style={{padding:"10px 14px",borderBottom:"1px solid rgba(255,255,255,.07)"}}>
+        <p className="text-xs font-semibold truncate" style={{color:"#e2e8f0"}}>{user.name}</p>
+        <p className="text-xs truncate" style={{color:"#475569"}}>{user.email}</p>
+      </div>
+      <button onClick={onLogout} className="dd-item" style={{color:"#f87171"}}>{t(lang,"logout")}</button>
+    </Dropdown>
+  );
+}
+
+// ── APPLY ACTIONS ─────────────────────────────────────────────
+function ApplyActions({lang,prog,ans}){
+  const a=prog.apply;if(!a)return null;
+  const cd=ans?.zip?getCountyLinks(ans.zip):null;
+  const cr=cd&&a.countyKey?cd.links[a.countyKey]:null;
+  return(
+    <div>
+      <p className="text-xs font-black uppercase tracking-widest mb-2" style={{color:"#334155"}}>{t(lang,"next")}</p>
+      <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+        {a.online&&<a href={a.online.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">🌐 {a.online[lang]||a.online.en}</a>}
+        {a.altOnline&&<a href={a.altOnline.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">🌐 {a.altOnline[lang]||a.altOnline.en}</a>}
+        {a.extra&&(()=>{const ex=(a.extra[lang]||a.extra.en)(ans);return ex?<a key="v" href={ex.url} target="_blank" rel="noopener noreferrer" className="alink alink-orange">📍 {ex.label}</a>:null;})()}
+        {a.phone&&<a href={`tel:${a.phone.number.replace(/[^\d]/g,"")}`} className="alink alink-blue">📞 {a.phone.label[lang]}: {a.phone.number}</a>}
+        {cr?.phone&&cr.phone!==a.phone?.number&&<a href={`tel:${cr.phone.replace(/[^\d]/g,"")}`} className="alink alink-blue">📍 {cd.county}: {cr.phone}</a>}
+        {cr?.url&&cr.url!==a.online?.url&&<a href={cr.url} target="_blank" rel="noopener noreferrer" className="alink alink-purple">🏛️ {t(lang,"county_r",{county:cd.county})}</a>}
+        {cr?.office&&<a href={`https://maps.google.com/?q=${encodeURIComponent(cr.office)}`} target="_blank" rel="noopener noreferrer" className="alink alink-purple">🚶 {cr.office}</a>}
+      </div>
+    </div>
+  );
+}
+
+// ── PROGRAM CARD ──────────────────────────────────────────────
+function PCard({lang,p,ans,idx}){
+  const[open,setOpen]=useState(false);
+  const cc=CAT_COLOR[p.cat]||"#2dd4bf";
+  const ef=p.est?.[lang]||p.est?.en;
+  const wf=p.why?.[lang]||p.why?.en;
+  return(
+    <div className={`card-accent overflow-hidden au d${Math.min(idx+1,6)}`} style={{borderLeft:`3px solid ${cc}`}}>
+      <div style={{padding:"16px 18px",display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <div style={{width:40,height:40,borderRadius:10,background:`${cc}18`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{p.icon}</div>
+            <div>
+              <div style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:cc}}>{catLabel(lang,p.cat)}</div>
+              <h3 style={{fontSize:15,fontWeight:800,color:"#f1f5f9",margin:"2px 0 0",lineHeight:1.3}}>{p.name[lang]||p.name.en}</h3>
+            </div>
+          </div>
+          {ef&&<div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:11,color:"#334155"}}>{t(lang,"est")}</div><div style={{fontSize:15,fontWeight:900,color:cc,marginTop:2}}>{ef(ans)}</div></div>}
+        </div>
+        <p style={{fontSize:13,color:"#64748b",lineHeight:1.6,margin:0}}>{p.desc[lang]||p.desc.en}</p>
+        <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:10,padding:"11px 13px"}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"#334155",marginBottom:5}}>{t(lang,"why")}</p>
+          <p style={{fontSize:13,color:"#94a3b8",lineHeight:1.6,margin:0}}>{wf?.(ans)}</p>
+        </div>
+        <ApplyActions lang={lang} prog={p} ans={ans}/>
+      </div>
+      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",padding:"9px 18px"}}>
+        <button onClick={()=>setOpen(o=>!o)} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:700,color:"#334155",width:"100%",textAlign:"left"}}>{t(lang,"imm_toggle")} {open?"▴":"▾"}</button>
+        {open&&<div className="au" style={{marginTop:8,background:"rgba(251,191,36,.06)",border:"1px solid rgba(251,191,36,.12)",borderRadius:9,padding:"10px 12px"}}><p style={{fontSize:12,color:"#c9a84c",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{p.imm[lang]||p.imm.en}</p><a href={p.src} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:"#475569",marginTop:6,display:"block"}}>{p.src}</a></div>}
+      </div>
+    </div>
+  );
+}
+
+// ── HOW IT WORKS ──────────────────────────────────────────────
+function HowCard({lang,title,steps,note}){
+  return(
+    <div className="surface" style={{padding:"18px 20px"}}>
+      <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",marginBottom:14}}>{title||t(lang,"how_h_title")}</p>
+      {steps.map((s,i)=>(
+        <div key={i} style={{display:"flex",gap:12,marginBottom:i<steps.length-1?12:0}}>
+          <div style={{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff",fontSize:11,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>{i+1}</div>
+          <p style={{fontSize:13,color:"#94a3b8",lineHeight:1.6,margin:0}}>{s}</p>
+        </div>
+      ))}
+      {note&&<p style={{fontSize:12,color:"#1e293b",marginTop:12,lineHeight:1.5}}>{note}</p>}
+    </div>
+  );
+}
+
+// ── AUTH MODAL ────────────────────────────────────────────────
+function AuthModal({lang,tab:initTab,onAuth,onClose}){
+  const[tab,setTab]=useState(initTab);
+  const[f,setF]=useState({name:"",email:"",pw:"",conf:""});
+  const[err,setErr]=useState("");
+  const[shk,setShk]=useState(false);
+  const set=(k,v)=>setF(p=>({...p,[k]:v}));
+  const score=pwScore(f.pw);
+  const bad=msg=>{setErr(msg);setShk(true);setTimeout(()=>setShk(false),400);};
+  const submit=e=>{
+    e.preventDefault();setErr("");
+    if(tab==="signup"){
+      if(!f.name.trim())return bad("Please enter your name.");
+      if(f.pw.length<8)return bad(t(lang,"pw_short"));
+      if(f.pw!==f.conf)return bad(t(lang,"pw_mismatch"));
+      const r=doSignup({name:f.name.trim(),email:f.email.trim(),password:f.pw});
+      if(r.err)return bad(r.err);onAuth(r.user);
+    }else{
+      const r=doLogin({email:f.email.trim(),password:f.pw});
+      if(r.err)return bad(r.err);onAuth(r.user);
+    }
+  };
+  const IL={fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"#334155",display:"block",marginBottom:6};
+  return(
+    <div className="modal-bg" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+      <div className="modal">
+        <div style={{display:"flex",justifyContent:"center",padding:"12px 0 8px"}}><div style={{width:36,height:4,background:"rgba(255,255,255,.1)",borderRadius:2}}/></div>
+        <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,.07)"}}>
+          {["login","signup"].map(k=>(
+            <button key={k} onClick={()=>{setTab(k);setErr("");}} style={{flex:1,padding:"14px",fontSize:13,fontWeight:700,background:"none",border:"none",borderBottom:`2px solid ${tab===k?"#2dd4bf":"transparent"}`,color:tab===k?"#2dd4bf":"#475569",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,k)}</button>
+          ))}
+        </div>
+        <div style={{padding:"20px 22px"}}>
+          <p style={{fontSize:13,color:"#475569",marginBottom:16}}>{t(lang,`${tab}_sub`)}</p>
+          <form onSubmit={submit} style={{display:"flex",flexDirection:"column",gap:12}}>
+            {tab==="signup"&&<div className="au"><label style={IL}>{t(lang,"name_l")}</label><input type="text" value={f.name} onChange={e=>set("name",e.target.value)} placeholder="Your name" required autoComplete="name"/></div>}
+            <div><label style={IL}>{t(lang,"email_l")}</label><input type="email" value={f.email} onChange={e=>set("email",e.target.value)} placeholder="you@email.com" required autoComplete="email"/></div>
+            <div>
+              <label style={IL}>{t(lang,"pw_l")}</label>
+              <input type="password" value={f.pw} onChange={e=>set("pw",e.target.value)} placeholder="••••••••" required autoComplete={tab==="login"?"current-password":"new-password"}/>
+              {tab==="signup"&&f.pw&&<div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}><div style={{display:"flex",gap:3,flex:1}}>{[0,1,2,3].map(i=><div key={i} style={{height:3,flex:1,borderRadius:2,background:i<score?SC[Math.max(0,score-1)]:"rgba(255,255,255,.08)",transition:"background .3s"}}/>)}</div><span style={{fontSize:11,color:"#475569"}}>{SL[lang]?.[score]}</span></div>}
+            </div>
+            {tab==="signup"&&<div className="au"><label style={IL}>{t(lang,"conf_l")}</label><input type="password" value={f.conf} onChange={e=>set("conf",e.target.value)} placeholder="••••••••" required autoComplete="new-password" style={{borderColor:f.conf&&f.conf!==f.pw?"rgba(239,68,68,.5)":""}}/></div>}
+            {err&&<div className={shk?"shake":""} style={{fontSize:13,color:"#fca5a5",background:"rgba(239,68,68,.1)",border:"1px solid rgba(239,68,68,.2)",borderRadius:9,padding:"10px 13px"}}>{err}</div>}
+            <button type="submit" className="btn btn-primary" style={{width:"100%",marginTop:4}}>{t(lang,`${tab}_btn`)}</button>
+          </form>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,marginTop:16}}>
+            <button onClick={()=>{setTab(tab==="login"?"signup":"login");setErr("");}} style={{fontSize:13,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,tab==="login"?"to_signup":"to_login")}</button>
+            <div style={{display:"flex",alignItems:"center",gap:12,width:"100%"}}><div style={{flex:1,height:1,background:"rgba(255,255,255,.06)"}}/><span style={{fontSize:11,color:"#1e293b"}}>{t(lang,"or")}</span><div style={{flex:1,height:1,background:"rgba(255,255,255,.06)"}}/></div>
+            <button onClick={onClose} style={{fontSize:13,color:"#334155",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,"guest")}</button>
+          </div>
+          <p style={{fontSize:11,color:"#1e293b",textAlign:"center",marginTop:14,lineHeight:1.6}}>{t(lang,"auth_priv")}</p>
+          <p style={{fontSize:11,color:"#78350f",textAlign:"center",marginTop:4}}>{t(lang,"auth_demo")}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── QUESTIONNAIRE ─────────────────────────────────────────────
+const STEPS=["size","income","kids","preg","senior","dis","house","tax","zip"];
+const N=STEPS.length;
+
+function Questionnaire({lang,onDone}){
+  const[step,setStep]=useState(0);
+  const[dir,setDir]=useState("r");
+  const[k,setK]=useState(0);
+  const[a,setA]=useState({size:null,incomeIdx:null,hasKids:null,kidsCount:null,pregnant:null,senior:null,dis:null,house:null,taxes:null,zip:""});
+  const set=(key,v)=>setA(p=>({...p,[key]:v}));
+  const fwd=()=>{setDir("r");setK(n=>n+1);setStep(s=>s+1);};
+  const bwd=()=>{setDir("l");setK(n=>n+1);setStep(s=>s-1);};
+  const go=(key,v)=>{set(key,v);setTimeout(fwd,180);};
+  const final=()=>({...a,size:(a.size??0)+1});
+  const s=STEPS[step];
+  const cls=dir==="r"?"ar":"al";
+  const sz=t(lang,"sizes"),inc=t(lang,"incomes"),cnt=t(lang,"counts");
+  const pct=Math.round((step+1)/N*100);
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:24,maxWidth:560,margin:"0 auto"}}>
+      {/* Progress */}
+      <div>
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
+          {step>0&&<button onClick={bwd} style={{width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",color:"#64748b",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>‹</button>}
+          <div style={{flex:1}}>
+            <div className="prog-bar"><div className="prog-fill" style={{width:`${pct}%`}}/></div>
+          </div>
+          <span style={{fontSize:12,fontWeight:700,color:"#334155",flexShrink:0}}>{step+1}/{N}</span>
+        </div>
+        {/* Step dots */}
+        <div style={{display:"flex",gap:4,paddingLeft:step>0?48:0}}>
+          {STEPS.map((_,i)=><div key={i} style={{height:2,flex:1,borderRadius:1,background:i<=step?"linear-gradient(90deg,#2dd4bf,#38bdf8)":"rgba(255,255,255,.06)",transition:"background .3s"}}/>)}
+        </div>
+      </div>
+      <div key={k} className={cls}>
+        {s==="size"&&<QStep q={t(lang,"q_size")} h={t(lang,"q_size_h")}><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>{t(lang,"sizes").map((l,i)=><Cho key={i} label={l} sel={a.size===i} onClick={()=>{set("size",i);setTimeout(fwd,180);}} delay={i}/>)}</div></QStep>}
+        {s==="income"&&<QStep q={t(lang,"q_income")} h={t(lang,"q_income_h")}><div style={{display:"flex",flexDirection:"column",gap:6}}>{inc.map((l,i)=><Cho key={i} label={l} sel={a.incomeIdx===i} delay={i} onClick={()=>go("incomeIdx",i)}/>)}</div></QStep>}
+        {s==="kids"&&<QStep q={t(lang,"q_kids")}><div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><Cho label={t(lang,"yes")} sel={a.hasKids===true} onClick={()=>set("hasKids",true)}/><Cho label={t(lang,"no")} sel={a.hasKids===false} onClick={()=>go("hasKids",false)}/></div>{a.hasKids&&<div className="au"><p style={{fontSize:12,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em",color:"#334155",marginBottom:6}}>{t(lang,"q_kids_n")}</p><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>{cnt.map((l,i)=><Cho key={i} label={l} sel={a.kidsCount===i} onClick={()=>{set("kidsCount",i);setTimeout(fwd,180);}} delay={i}/>)}</div></div>}</div></QStep>}
+        {s==="preg"&&<QStep q={t(lang,"q_preg")}><YNGrid yes={a.pregnant===true} onY={()=>go("pregnant",true)} onN={()=>go("pregnant",false)} lang={lang}/></QStep>}
+        {s==="senior"&&<QStep q={t(lang,"q_senior")}><YNGrid yes={a.senior===true} onY={()=>go("senior",true)} onN={()=>go("senior",false)} lang={lang}/></QStep>}
+        {s==="dis"&&<QStep q={t(lang,"q_dis")}><YNGrid yes={a.dis===true} onY={()=>go("dis",true)} onN={()=>go("dis",false)} lang={lang}/></QStep>}
+        {s==="house"&&<QStep q={t(lang,"q_house")}><div style={{display:"flex",flexDirection:"column",gap:6}}>{[t(lang,"rent"),t(lang,"own"),t(lang,"unstable")].map((l,i)=><Cho key={i} label={l} sel={a.house===i} delay={i} onClick={()=>go("house",i)}/>)}</div></QStep>}
+        {s==="tax"&&<QStep q={t(lang,"q_tax")} h={t(lang,"q_tax_h")}><div style={{display:"flex",flexDirection:"column",gap:6}}>{[t(lang,"tax_y"),t(lang,"tax_n"),t(lang,"tax_u")].map((l,i)=><Cho key={i} label={l} sel={(a.taxes===true?0:a.taxes===false?1:a.taxes==="u"?2:null)===i} delay={i} onClick={()=>{set("taxes",[true,false,"u"][i]);setTimeout(fwd,180);}}/>)}</div></QStep>}
+        {s==="zip"&&<QStep q={t(lang,"q_zip")} h={t(lang,"q_zip_h")}>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {a.zip&&getCounty(a.zip)&&<div className="au" style={{background:"rgba(45,212,191,.1)",border:"1px solid rgba(45,212,191,.2)",borderRadius:9,padding:"9px 13px",fontSize:13,fontWeight:700,color:"#2dd4bf"}}>📍 {getCounty(a.zip)} County</div>}
+            <input type="text" inputMode="numeric" maxLength={5} value={a.zip} onChange={e=>set("zip",e.target.value.replace(/\D/g,""))} placeholder="e.g. 94103"/>
+            <button onClick={()=>onDone(final())} className="btn btn-primary" style={{width:"100%"}}>{t(lang,"results_btn")}</button>
+            <button onClick={()=>{set("zip","");onDone(final());}} className="btn btn-ghost" style={{width:"100%"}}>{t(lang,"skip")} →</button>
+          </div>
+        </QStep>}
+      </div>
+    </div>
+  );
+}
+function QStep({q,h,children}){
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div><h2 style={{fontSize:22,fontWeight:900,color:"#f1f5f9",margin:0,lineHeight:1.3}}>{q}</h2>{h&&<p style={{fontSize:13,color:"#475569",margin:"6px 0 0",lineHeight:1.5}}>{h}</p>}</div>
+      {children}
+    </div>
+  );
+}
+function Cho({label,sel,onClick,delay=0}){
+  return(
+    <button onClick={onClick} className={`choice${sel?" sel":""}`} style={{animationDelay:`${delay*45}ms`}} role="radio" aria-pressed={sel}>
+      <span>{label}</span>
+      {sel&&<span className="pop" style={{fontSize:13,color:"#2dd4bf"}}>✓</span>}
+    </button>
+  );
+}
+function YNGrid({yes,onY,onN,lang}){
+  return(
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+      <Cho label={t(lang,"yes")} sel={yes===true} onClick={onY}/>
+      <Cho label={t(lang,"no")} sel={yes===false} onClick={onN}/>
+    </div>
+  );
+}
+
+// ── RESULTS ───────────────────────────────────────────────────
+function Results({lang,ans,progs,navMode,logged,onLog,onBack,onShare,onPrint}){
+  const grouped={};
+  CAT_ORDER.forEach(c=>{const items=progs.filter(p=>p.cat===c);if(items.length)grouped[c]=items;});
+  const cd=ans?.zip?getCountyLinks(ans.zip):null;
+  const estTotal=progs.reduce((acc,p)=>{const s=(p.est?.[lang]||p.est?.en)?.(ans)||"";const mm=s.match(/\$([\d,]+)/);return mm?acc+parseInt(mm[1].replace(",","")):acc;},0);
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:20,paddingBottom:80}}>
+      <div className="printable"><h1 style={{fontSize:"16pt",fontWeight:900}}>{lang==="en"?"Your Benefits Summary":"Tu Resumen de Beneficios"}</h1><hr style={{margin:"8px 0"}}/></div>
+      <div className="results-grid">
+        {/* LEFT: programs */}
+        <div style={{display:"flex",flexDirection:"column",gap:16}}>
+          {/* Summary */}
+          <div className="au card-accent" style={{padding:"20px 22px",background:"linear-gradient(135deg,rgba(13,148,136,.2),rgba(8,145,178,.12))"}}>
+            {cd&&<div style={{marginBottom:14,fontSize:12,fontWeight:700,color:"#2dd4bf",display:"flex",alignItems:"center",gap:6}}>📍 {cd.county} County — {lang==="en"?"local resources shown below":"recursos locales abajo"}</div>}
+            <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:16}}>
+              <div>
+                <div style={{fontSize:52,fontWeight:900,color:"#fff",lineHeight:1}}>{progs.length}</div>
+                <div style={{fontSize:13,color:"#64748b",marginTop:3}}>{lang==="en"?`program${progs.length!==1?"s":""} likely match`:`programa${progs.length!==1?"s":""} probablemente`}</div>
+              </div>
+              {estTotal>100&&<div style={{textAlign:"right"}}>
+                <div style={{fontSize:11,color:"#334155",marginBottom:3}}>{lang==="en"?"Potential value":"Valor potencial"}</div>
+                <div style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>${estTotal.toLocaleString()}+/{lang==="en"?"yr":"año"}</div>
+              </div>}
+            </div>
+          </div>
+          <div className="au"><h1 style={{fontSize:24,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"res_title")}</h1><p style={{fontSize:13,color:"#475569",margin:"4px 0 0"}}>{t(lang,"res_sub")}</p></div>
+          {progs.length===0&&<div className="card" style={{padding:"20px"}}><p style={{fontWeight:700,color:"#f1f5f9",margin:0}}>{t(lang,"no_res")}</p><p style={{fontSize:13,color:"#475569",margin:"6px 0 0"}}>{t(lang,"no_res_sub")}</p></div>}
+          {Object.entries(grouped).map(([cat,items])=>(
+            <div key={cat} style={{display:"flex",flexDirection:"column",gap:10}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0"}}>
+                <div style={{width:6,height:6,borderRadius:"50%",background:CAT_COLOR[cat]||"#2dd4bf"}}/>
+                <span style={{fontSize:11,fontWeight:900,letterSpacing:".08em",textTransform:"uppercase",color:CAT_COLOR[cat]||"#2dd4bf"}}>{catLabel(lang,cat)}</span>
+              </div>
+              {items.map((p,i)=><PCard key={p.id} lang={lang} p={p} ans={ans} idx={i}/>)}
+            </div>
+          ))}
+          {/* More stub */}
+          <div className="no-print" style={{border:"1px dashed rgba(255,255,255,.07)",borderRadius:12,padding:"14px 16px"}}>
+            <p style={{fontSize:12,fontWeight:700,color:"#1e293b",margin:0}}>{t(lang,"more")}</p>
+            <p style={{fontSize:12,color:"#0f172a",margin:"3px 0 0"}}>{t(lang,"more_sub")}</p>
+          </div>
+        </div>
+
+        {/* RIGHT: sidebar panel */}
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          {/* Public charge */}
+          <div className="card" style={{padding:"16px"}}>
+            <div style={{display:"flex",gap:12}}>
+              <span style={{fontSize:20,flexShrink:0}}>🛡️</span>
+              <div><p style={{fontSize:13,fontWeight:700,color:"#f1f5f9",margin:0}}>{t(lang,"pc_title")}</p><p style={{fontSize:12,color:"#475569",margin:"5px 0 0",lineHeight:1.6}}>{t(lang,"pc_body")}</p><a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{fontSize:12,color:"#2dd4bf",marginTop:6,display:"inline-block"}}>{t(lang,"pc_link")}</a></div>
+            </div>
+          </div>
+          {/* Free help */}
+          <div className="card" style={{padding:"16px"}}>
+            <h3 style={{fontSize:15,fontWeight:800,color:"#f1f5f9",margin:"0 0 4px"}}>{t(lang,"hoff_title")}</h3>
+            <p style={{fontSize:12,color:"#475569",margin:"0 0 12px"}}>{t(lang,"hoff_sub")}</p>
+            {PARTNERS.map((p,i)=>(
+              <div key={p.web} style={{display:"flex",gap:10,paddingBottom:i<PARTNERS.length-1?11:0,marginBottom:i<PARTNERS.length-1?11:0,borderBottom:i<PARTNERS.length-1?"1px solid rgba(255,255,255,.05)":"none"}}>
+                <span style={{fontSize:18,flexShrink:0,marginTop:1}}>{p.emoji}</span>
+                <div style={{flex:1,minWidth:0}}>
+                  <p style={{fontSize:12,fontWeight:700,color:"#e2e8f0",margin:0}}>{p.name[lang]||p.name.en}</p>
+                  <p style={{fontSize:11,color:"#475569",margin:"2px 0 5px",lineHeight:1.5}}>{p.desc[lang]||p.desc.en}</p>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                    <a href={`tel:${p.phone.replace(/[^\d]/g,"")}`} className="alink alink-blue" style={{fontSize:11,padding:"5px 9px"}}>{t(lang,"call")} {p.phone}</a>
+                    <a href={p.web} target="_blank" rel="noopener noreferrer" className="alink alink-teal" style={{fontSize:11,padding:"5px 9px"}}>{t(lang,"web")} →</a>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <p style={{fontSize:11,color:"#1e293b",textAlign:"center",marginTop:12}}>{t(lang,"dial")}</p>
+          </div>
+          {/* Navigator log */}
+          {navMode&&<div className="card" style={{padding:"14px"}}>{logged?<p style={{fontSize:13,fontWeight:800,textAlign:"center",color:"#2dd4bf",margin:0}}>{t(lang,"nav_logged")}</p>:<button onClick={onLog} className="btn btn-primary" style={{width:"100%"}}>{t(lang,"nav_log")}</button>}</div>}
+          {/* Actions */}
+          <div className="no-print" style={{display:"flex",flexDirection:"column",gap:8}}>
+            <button onClick={onPrint} className="btn btn-secondary" style={{width:"100%"}}>{t(lang,"print")}</button>
+            <button onClick={onShare} className="btn btn-secondary" style={{width:"100%"}}>{t(lang,"share")}</button>
+            <button onClick={onBack} className="btn btn-ghost" style={{width:"100%"}}>{t(lang,"restart")}</button>
+          </div>
+        </div>
+      </div>
+      <div className="printable" style={{borderTop:"1px solid #ddd",paddingTop:10,marginTop:8}}><p style={{fontSize:"8pt",color:"#888"}}>{lang==="en"?"Using these programs does not affect immigration status. Final eligibility determined by official application.":"Usar estos programas no afecta el estatus migratorio."}</p></div>
+    </div>
+  );
+}
+
+// ── NAVIGATOR DASHBOARD ───────────────────────────────────────
+function NavDash({lang,user,onNew,onShare,onShowAuth}){
+  const[sessTd,setSessTd]=useState(0);
+  const[sessTot,setSessTot]=useState(0);
+  const today=user?LS.todayCount(user.id):sessTd;
+  const total=user?LS.totalCount(user.id):sessTot;
+  const sessions=user?LS.sessions(user.id).slice(0,7):[];
+  const fmt=iso=>new Date(iso).toLocaleDateString(lang==="es"?"es-US":"en-US",{month:"short",day:"numeric"});
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:16,paddingBottom:80,maxWidth:760,margin:"0 auto"}}>
+      <div><h1 style={{fontSize:26,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"nav_title")}</h1><p style={{fontSize:14,color:"#475569",margin:"4px 0 0"}}>{t(lang,"nav_sub")}</p></div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16}}>
+        <HowCard lang={lang} title={t(lang,"how_n_title")} steps={[t(lang,"how_n_1"),t(lang,"how_n_2"),t(lang,"how_n_3")]} note={t(lang,"how_n_note")}/>
+        <div className="card" style={{padding:"20px"}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 14px"}}>{t(lang,"nav_impact")}</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+            <div style={{background:"rgba(255,255,255,.04)",borderRadius:10,padding:"14px",textAlign:"center"}}>
+              <div style={{fontSize:42,fontWeight:900,color:"#f1f5f9",lineHeight:1}}>{today}</div>
+              <div style={{fontSize:11,color:"#475569",marginTop:4}}>{t(lang,"nav_today")}</div>
+            </div>
+            <div style={{background:"rgba(255,255,255,.04)",borderRadius:10,padding:"14px",textAlign:"center"}}>
+              <div style={{fontSize:42,fontWeight:900,lineHeight:1,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{total}</div>
+              <div style={{fontSize:11,color:"#475569",marginTop:4}}>{t(lang,"nav_total")}</div>
+            </div>
+          </div>
+          {user&&sessions.length>0&&sessions.map((s,i)=><div key={s.id||i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:i<sessions.length-1?"1px solid rgba(255,255,255,.04)":"none"}}><span style={{fontSize:12,color:"#475569"}}>{fmt(s.date)}</span><span style={{fontSize:12,fontWeight:700,color:"#2dd4bf"}}>{s.count} {t(lang,"nav_hh")}</span></div>)}
+          {user&&sessions.length===0&&<p style={{fontSize:12,color:"#1e293b",textAlign:"center"}}>{t(lang,"nav_no_hist")}</p>}
+          {!user&&<div style={{background:"rgba(45,212,191,.06)",border:"1px solid rgba(45,212,191,.15)",borderRadius:9,padding:"12px",marginTop:4}}>
+            <p style={{fontSize:13,fontWeight:700,color:"#f1f5f9",margin:"0 0 3px"}}>{t(lang,"nav_guest_title")}</p>
+            <p style={{fontSize:12,color:"#475569",margin:"0 0 8px",lineHeight:1.5}}>{t(lang,"nav_guest_sub")}</p>
+            <button onClick={onShowAuth} style={{fontSize:12,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,"signup")} →</button>
+          </div>}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        <button onClick={onNew} className="btn btn-primary" style={{flex:1,minWidth:200}}>{t(lang,"nav_new")}</button>
+        <button onClick={onShare} className="btn btn-secondary" style={{flex:1,minWidth:160}}>{t(lang,"nav_share")}</button>
+      </div>
+    </div>
+  );
+}
+
+// ── SHARE PAGE ────────────────────────────────────────────────
+function SharePage({lang,onBack}){
+  const[copied,setCopied]=useState(false);
+  const[big,setBig]=useState(false);
+  const url=typeof window!=="undefined"?window.location.href.split("?")[0]:"https://cabeneficios.org";
+  const sz=big?280:160;
+  const qr=`https://api.qrserver.com/v1/create-qr-code/?size=${sz}x${sz}&data=${encodeURIComponent(url)}&margin=10&color=2dd4bf&bgcolor=080d18`;
+  const copy=()=>{const fb=()=>{const el=document.createElement("textarea");el.value=url;document.body.appendChild(el);el.select();document.execCommand("copy");document.body.removeChild(el);};(navigator.clipboard?navigator.clipboard.writeText(url).catch(fb):Promise.resolve(fb())).finally(()=>{setCopied(true);setTimeout(()=>setCopied(false),2500);});};
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:16,paddingBottom:80,maxWidth:600,margin:"0 auto"}}>
+      <div className="printable" style={{textAlign:"center",padding:"20px 12px",color:"#000"}}><div style={{fontSize:"22pt",fontWeight:900,marginBottom:10}}>{t(lang,"sh_head")}</div><div style={{fontSize:"12pt",color:"#444",marginBottom:14}}>{t(lang,"sh_body")}</div><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&margin=10`} alt="QR" style={{display:"block",margin:"0 auto 12px"}} width="200" height="200"/><div style={{fontSize:"9pt",color:"#666"}}>{t(lang,"sh_places")}</div></div>
+      <div className="no-print"><h1 style={{fontSize:24,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"sh_title")}</h1><p style={{fontSize:13,color:"#475569",margin:"4px 0 0"}}>{t(lang,"sh_sub")}</p></div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:14}} className="no-print">
+        <div className="card au" style={{padding:"20px",display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:0}}>{t(lang,"sh_qr")}</p>
+          <div style={{borderRadius:14,overflow:"hidden",border:"1px solid rgba(45,212,191,.2)",padding:10,background:"#080d18"}}><img src={qr} alt="QR" width={sz} height={sz} style={{display:"block",borderRadius:6}}/></div>
+          <button onClick={()=>setBig(b=>!b)} style={{fontSize:12,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{big?"← Smaller":"Larger QR"}</button>
+          <p style={{fontSize:11,color:"#1e293b",wordBreak:"break-all",textAlign:"center",margin:0}}>{url}</p>
+        </div>
+        <div className="card au" style={{padding:"20px"}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 10px"}}>Flyer preview</p>
+          <p style={{fontSize:17,fontWeight:900,color:"#f1f5f9",margin:"0 0 6px",lineHeight:1.3}}>{t(lang,"sh_head")}</p>
+          <p style={{fontSize:13,color:"#64748b",margin:"0 0 8px",lineHeight:1.6}}>{t(lang,"sh_body")}</p>
+          <p style={{fontSize:13,fontWeight:800,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 10px"}}>{t(lang,"sh_url")}</p>
+          <p style={{fontSize:11,color:"#334155",margin:0,lineHeight:1.6}}>{t(lang,"sh_places")}</p>
+        </div>
+      </div>
+      <div className="no-print" style={{display:"flex",flexDirection:"column",gap:8}}>
+        <button onClick={()=>window.print()} className="btn btn-primary" style={{width:"100%"}}>{t(lang,"print_fly")}</button>
+        <button onClick={copy} className="btn btn-secondary" style={{width:"100%",...(copied?{borderColor:"#2dd4bf",color:"#2dd4bf"}:{})}}>{copied?t(lang,"copied"):t(lang,"copy")}</button>
+        <button onClick={onBack} className="btn btn-ghost" style={{width:"100%"}}>{t(lang,"back_res")}</button>
+      </div>
+    </div>
+  );
+}
+
+// ── LANDING ───────────────────────────────────────────────────
+function Landing({lang,onStart,onNav}){
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:24,paddingBottom:80}}>
+      {/* Hero */}
+      <div style={{borderRadius:16,overflow:"hidden",background:"#0c1624",border:"1px solid rgba(255,255,255,.05)",padding:"40px 28px",position:"relative"}}>
+        <div style={{position:"absolute",top:0,right:0,width:"55%",height:"100%",pointerEvents:"none",background:"radial-gradient(ellipse 80% 100% at 100% 50%,rgba(13,148,136,.08),transparent)"}}/>
+        <div style={{position:"relative",maxWidth:580}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(45,212,191,.08)",border:"1px solid rgba(45,212,191,.18)",borderRadius:100,padding:"5px 12px",marginBottom:20}}>
+            <span style={{width:6,height:6,borderRadius:"50%",background:"#2dd4bf",display:"inline-block",animation:"pulse-glow 2s infinite"}}/>
+            <span style={{fontSize:11,fontWeight:800,color:"#2dd4bf",letterSpacing:".05em"}}>{t(lang,"badge")}</span>
+          </div>
+          <h1 style={{fontSize:28,fontWeight:900,color:"#f8fafc",margin:"0 0 14px",lineHeight:1.25}}>{t(lang,"title")}</h1>
+          <p style={{fontSize:14,color:"#64748b",margin:"0 0 28px",lineHeight:1.8}}>{t(lang,"sub")}</p>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:28}}>
+            <button onClick={onStart} className="btn btn-primary" style={{fontSize:15,padding:"14px 24px"}}>{t(lang,"start")}</button>
+            <button onClick={onNav} className="btn btn-secondary" style={{fontSize:14}}>{t(lang,"nav_cta")}</button>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:7}}>
+            {[t(lang,"priv"),t(lang,"immig"),t(lang,"free")].map((txt,i)=>(
+              <p key={i} style={{fontSize:12,color:"#334155",margin:0,lineHeight:1.5}}>{txt}{i===1&&<a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{color:"#2dd4bf",marginLeft:6,fontWeight:700}}>{t(lang,"immig_link")}</a>}</p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* What is Calify */}
+      <div className="card au" style={{padding:"22px 24px"}}>
+        <h2 style={{fontSize:16,fontWeight:800,color:"#e2e8f0",margin:"0 0 10px"}}>{t(lang,"what_is")}</h2>
+        <p style={{fontSize:14,color:"#64748b",margin:0,lineHeight:1.8}}>{t(lang,"what_body")}</p>
+      </div>
+
+      {/* How it works + trust */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:12}}>
+        <HowCard lang={lang} title={t(lang,"how_h_title")} steps={[t(lang,"how_h_1"),t(lang,"how_h_2"),t(lang,"how_h_3")]} note={t(lang,"how_h_note")}/>
+        <div className="surface au" style={{padding:"18px 20px"}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#1e293b",margin:"0 0 14px"}}>{lang==="en"?"Who is this for?":"¿Para quién es esto?"}</p>
+          {(lang==="en"?[
+            {e:"🏠",t:"Renters and homeowners with low-to-moderate income"},
+            {e:"👨‍👩‍👧",t:"Families with children of any age"},
+            {e:"🤰",t:"Pregnant individuals or new parents"},
+            {e:"👴",t:"Seniors 60 and older"},
+            {e:"♿",t:"People with disabilities"},
+            {e:"🌎",t:"Immigrants — documented and undocumented"},
+          ]:[
+            {e:"🏠",t:"Personas que rentan o son dueñas de casa con ingresos bajos"},
+            {e:"👨‍👩‍👧",t:"Familias con hijos de cualquier edad"},
+            {e:"🤰",t:"Embarazadas o nuevos padres"},
+            {e:"👴",t:"Personas de 60 años o más"},
+            {e:"♿",t:"Personas con discapacidades"},
+            {e:"🌎",t:"Inmigrantes — documentados e indocumentados"},
+          ]).map((r,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:9,marginBottom:i<5?8:0}}>
+              <span style={{fontSize:14,flexShrink:0}}>{r.e}</span>
+              <span style={{fontSize:13,color:"#475569",lineHeight:1.4}}>{r.t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Programs grid */}
+      <div>
+        <div style={{marginBottom:14}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 4px"}}>{t(lang,"programs")}</p>
+          <p style={{fontSize:13,color:"#334155",margin:0}}>{lang==="en"?"We instantly check your household against all 10 of these — you only see the ones you match.":"Evaluamos tu hogar contra los 10 programas al instante — solo ves los que aplican."}</p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
+          {PROGS.map((p,i)=>{
+            const cc=CAT_COLOR[p.cat]||"#2dd4bf";
+            const tagline={
+              calfresh:{en:"Monthly grocery money on an EBT card",es:"Dinero mensual para comida en tarjeta EBT"},
+              wic:{en:"Food & nutrition for moms and kids under 5",es:"Comida y nutrición para mamás e hijos menores de 5"},
+              medic:{en:"Free or nearly free doctor, dental & vision",es:"Médico, dental y visión gratis o casi gratis"},
+              eitc:{en:"Up to $12,000+ back when you file taxes",es:"Hasta $12,000+ de regreso al declarar impuestos"},
+              liheap:{en:"Help paying your electricity or gas bill",es:"Ayuda para pagar luz o gas"},
+              care:{en:"Permanent 20–35% off your utility bill",es:"20–35% de descuento permanente en servicios"},
+              lifeline:{en:"Discounted or free phone & internet",es:"Teléfono e internet con descuento o gratis"},
+              calworks:{en:"Monthly cash + job training for families with kids",es:"Efectivo mensual y capacitación laboral para familias"},
+              ssi:{en:"Monthly cash for seniors 65+ or people with disabilities",es:"Efectivo mensual para personas mayores o con discapacidad"},
+              coveredca:{en:"Low-cost health insurance if you earn too much for Medi-Cal",es:"Seguro de salud asequible si ganas demasiado para Medi-Cal"},
+            }[p.id]||{en:"",es:""};
+            return(
+              <div key={p.id} className={`au d${Math.min(i+1,6)}`} style={{background:"rgba(255,255,255,.025)",border:`1px solid rgba(255,255,255,.06)`,borderLeft:`3px solid ${cc}`,borderRadius:11,padding:"12px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+                  <span style={{fontSize:18,flexShrink:0}}>{p.icon}</span>
+                  <div style={{fontSize:12,fontWeight:800,color:cc}}>{p.name[lang]||p.name.en}</div>
+                </div>
+                <div style={{fontSize:12,color:"#334155",lineHeight:1.5}}>{tagline[lang]||tagline.en}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────
+function Sidebar({lang,view,mode,user,onHome,onNav,onShare,onLogin,onLogout,setLang}){
+  return(
+    <aside className="sidebar no-print">
+      {/* Logo */}
+      <div style={{padding:"8px 12px 16px",borderBottom:"1px solid rgba(255,255,255,.06)",marginBottom:8}}>
+        <button onClick={onHome} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",padding:0,textAlign:"left"}}>
+          <div style={{fontSize:19,fontWeight:900,letterSpacing:"-.04em",color:"#f8fafc"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></div>
+          <div style={{fontSize:11,color:"#334155",marginTop:3}}>{t(lang,"tagline")}</div>
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <button onClick={onHome} className={`snav${(view==="landing"||view==="quest"||view==="results")&&mode==="hh"?" active":""}`}>
+        <div className="snav-icon" style={{background:"rgba(52,211,153,.12)"}} >🏠</div>
+        <span>{t(lang,"sidebar_household")}</span>
+      </button>
+      <button onClick={onNav} className={`snav${mode==="nav"?" active":""}`}>
+        <div className="snav-icon" style={{background:"rgba(56,189,248,.12)"}}>🧭</div>
+        <span>{t(lang,"sidebar_navigator")}</span>
+      </button>
+      <button onClick={onShare} className={`snav${view==="share"?" active":""}`}>
+        <div className="snav-icon" style={{background:"rgba(167,139,250,.12)"}}>📤</div>
+        <span>{t(lang,"sidebar_share")}</span>
+      </button>
+
+      <div style={{flex:1}}/>
+
+      {/* Programs quick list */}
+      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:14,marginTop:8}}>
+        <div style={{padding:"0 12px",marginBottom:12}}>
+          <p style={{fontSize:10,fontWeight:900,letterSpacing:".1em",textTransform:"uppercase",color:"#1e293b",margin:"0 0 5px"}}>{lang==="en"?"Programs we screen":"Programas que evaluamos"}</p>
+          <p style={{fontSize:11,color:"#1e293b",margin:0,lineHeight:1.5}}>{lang==="en"?"10 California programs checked instantly against your answers.":"10 programas de California evaluados al instante."}</p>
+        </div>
+        {PROGS.map(p=>{
+          const cc=CAT_COLOR[p.cat]||"#2dd4bf";
+          const tagline={
+            calfresh:{en:"Grocery benefits on EBT card",es:"Beneficios de comida en tarjeta EBT"},
+            wic:{en:"Food + support for moms & kids under 5",es:"Comida y apoyo para mamás e hijos menores de 5"},
+            medic:{en:"Free/low-cost doctor, dental, vision",es:"Médico, dental y visión gratis o bajo costo"},
+            eitc:{en:"Up to $12K back at tax time",es:"Hasta $12K de regreso al declarar impuestos"},
+            liheap:{en:"Help paying electricity or gas bills",es:"Ayuda para pagar luz o gas"},
+            care:{en:"20–35% off your utility bill",es:"20–35% de descuento en tu recibo de servicios"},
+            lifeline:{en:"Discounted phone or internet",es:"Teléfono o internet con descuento"},
+            calworks:{en:"Monthly cash + job support for families",es:"Efectivo mensual y apoyo laboral para familias"},
+            ssi:{en:"Monthly cash for seniors or disabled",es:"Efectivo mensual para mayores o discapacitados"},
+            coveredca:{en:"Subsidized health insurance",es:"Seguro de salud subsidiado"},
+          }[p.id]||{en:"",es:""};
+          return(
+            <div key={p.id} style={{display:"flex",alignItems:"flex-start",gap:9,padding:"7px 12px",borderRadius:8,borderLeft:`2px solid ${cc}22`,marginBottom:2}}>
+              <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{p.icon}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name[lang]||p.name.en}</div>
+                <div style={{fontSize:10,color:"#1e293b",marginTop:1,lineHeight:1.4}}>{tagline[lang]||tagline.en}</div>
+              </div>
+              <div style={{width:5,height:5,borderRadius:"50%",background:cc,flexShrink:0,marginTop:5}}/>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Auth + lang */}
+      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:12,marginTop:8,display:"flex",flexDirection:"column",gap:8}}>
+        <LangDropdown lang={lang} setLang={setLang}/>
+        {user?(
+          <div style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0"}}>
+            <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff",fontSize:11,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{user.name[0].toUpperCase()}</div>
+            <div style={{flex:1,minWidth:0}}><p style={{fontSize:11,fontWeight:700,color:"#e2e8f0",margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name}</p></div>
+            <button onClick={onLogout} style={{fontSize:11,color:"#ef4444",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{t(lang,"logout")}</button>
+          </div>
+        ):(
+          <button onClick={onLogin} className="btn btn-secondary btn-sm" style={{width:"100%"}}>{t(lang,"login")}</button>
+        )}
+      </div>
+    </aside>
+  );
+}
+
+// ── HEADER ────────────────────────────────────────────────────
+function Header({lang,setLang,user,onHome,onLogin,onLogout}){
+  return(
+    <header className="no-print" style={{position:"sticky",top:0,zIndex:90,background:"rgba(6,11,21,.96)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(255,255,255,.04)",padding:"11px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+      <button onClick={onHome} style={{fontSize:17,fontWeight:900,letterSpacing:"-.03em",color:"#f8fafc",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></button>
+      <div style={{display:"flex",alignItems:"center",gap:8}}>
+        <LangDropdown lang={lang} setLang={setLang}/>
+        {user?<UserMenu lang={lang} user={user} onLogout={onLogout}/>:<button onClick={onLogin} className="btn btn-secondary btn-sm">{t(lang,"login")}</button>}
+      </div>
+    </header>
+  );
+}
+
+// ── MOBILE BOTTOM BAR ─────────────────────────────────────────
+function MobileBar({lang,view,mode,onHome,onNav,onShare}){
+  const hh=(view==="landing"||view==="quest"||view==="results")&&mode==="hh";
+  const nav=mode==="nav";
+  const sh=view==="share";
+  return(
+    <nav className="mobile-bar">
+      <button onClick={onHome} className={`mobile-bar-btn${hh?" active":""}`}>
+        <span>🏠</span><span>{t(lang,"hh_mode")}</span>
+      </button>
+      <button onClick={()=>{}} className={`mobile-bar-btn${!hh&&!nav&&!sh?" active":""}`} style={{opacity:.4,cursor:"default"}}>
+        <span>📋</span><span>Results</span>
+      </button>
+      <button onClick={onNav} className={`mobile-bar-btn${nav?" active":""}`}>
+        <span>🧭</span><span>{lang==="en"?"Navigate":"Navegar"}</span>
+      </button>
+      <button onClick={onShare} className={`mobile-bar-btn${sh?" active":""}`}>
+        <span>📤</span><span>{t(lang,"share")}</span>
+      </button>
+    </nav>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────────────
+function App(){
+  const[lang,setLang]=useState("en");
+  const[view,setView]=useState("landing");
+  const[mode,setMode]=useState("hh");
+  const[ans,setAns]=useState(null);
+  const[progs,setProgs]=useState([]);
+  const[logged,setLogged]=useState(false);
+  const[user,setUser]=useState(()=>LS.me());
+  const[authOpen,setAuthOpen]=useState(false);
+  const[authTab,setAuthTab]=useState("login");
+  useEffect(()=>{document.documentElement.lang=lang;},[lang]);
+  const onDone=useCallback(a=>{setAns(a);setProgs(screen(a));setLogged(false);setView("results");},[]);
+  const logHH=useCallback(()=>{if(user)LS.addSession(user.id,1);setLogged(true);},[user]);
+  const doAuth=u=>{setUser(u);setAuthOpen(false);};
+  const doLogout=()=>{LS.clearMe();setUser(null);};
+  const openAuth=(tab="login")=>{setAuthTab(tab);setAuthOpen(true);};
+  const goNav=()=>{setMode("nav");setView("nav");};
+  const goHome=()=>{setMode("hh");setView("landing");};
+  return(
+    <div className="app-shell">
+      <Header lang={lang} setLang={setLang} user={user} onHome={goHome} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
+      <div className="app-body">
+        <Sidebar lang={lang} setLang={setLang} view={view} mode={mode} user={user}
+          onHome={goHome} onNav={goNav} onShare={()=>setView("share")} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
+        <main className="main-col has-mobile-bar">
+          {view==="landing"&&<Landing lang={lang} onStart={()=>setView("quest")} onNav={goNav}/>}
+          {view==="quest"&&<Questionnaire lang={lang} onDone={onDone}/>}
+          {view==="results"&&<Results lang={lang} ans={ans} progs={progs} navMode={mode==="nav"} logged={logged} onLog={logHH} onBack={goHome} onShare={()=>setView("share")} onPrint={()=>window.print()}/>}
+          {view==="share"&&<SharePage lang={lang} onBack={()=>setView(ans?"results":"landing")}/>}
+          {view==="nav"&&<NavDash lang={lang} user={user} onNew={()=>setView("quest")} onShare={()=>setView("share")} onShowAuth={()=>openAuth("signup")}/>}
+        </main>
+      </div>
+      <MobileBar lang={lang} view={view} mode={mode} onHome={goHome} onNav={goNav} onShare={()=>setView("share")}/>
+      {authOpen&&<AuthModal lang={lang} tab={authTab} onAuth={doAuth} onClose={()=>setAuthOpen(false)}/>}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
