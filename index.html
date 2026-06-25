@@ -11,7 +11,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
-body{background:#060b15;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:15px;line-height:1.6}
+:root{--ct1:#f1f5f9;--ct2:#94a3b8;--ct3:#64748b;--ct4:#475569;--ct5:#334155;--ct6:#1e293b;--cbg:#060b15;--cbg2:#0c1624;--ccard:#0e1623;--cov1:rgba(255,255,255,.025);--cov2:rgba(255,255,255,.04);--cborder:rgba(255,255,255,.06);--cborder2:rgba(255,255,255,.1)}
+body.light{--ct1:#0f172a;--ct2:#475569;--ct3:#64748b;--ct4:#64748b;--ct5:#94a3b8;--ct6:#94a3b8;--cbg:#f1f5f9;--cbg2:#ffffff;--ccard:#ffffff;--cov1:rgba(0,0,0,.03);--cov2:rgba(0,0,0,.05);--cborder:rgba(0,0,0,.08);--cborder2:rgba(0,0,0,.13)}
+body{background:var(--cbg);color:var(--ct1);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:15px;line-height:1.6}
 
 /* ── Animations ── */
 @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -31,9 +33,9 @@ body{background:#060b15;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFo
 .shake{animation:shake .3s ease}.pop{animation:pop .24s cubic-bezier(.34,1.56,.64,1) both}
 
 /* ── Surfaces — flat, minimal borders ── */
-.card{background:#0e1623;border:1px solid rgba(255,255,255,.05);border-radius:14px}
-.card-accent{background:#0e1623;border:1px solid rgba(45,212,191,.12);border-radius:14px}
-.surface{background:rgba(255,255,255,.025);border-radius:10px}
+.card{background:var(--ccard);border:1px solid var(--cborder);border-radius:14px}
+.card-accent{background:var(--ccard);border:1px solid rgba(45,212,191,.15);border-radius:14px}
+.surface{background:var(--cov1);border-radius:10px}
 
 /* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;font-weight:700;border-radius:10px;transition:all .15s;cursor:pointer;border:none;font-family:inherit;letter-spacing:-.01em;gap:6px}
@@ -47,25 +49,25 @@ body{background:#060b15;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFo
 .btn-sm{padding:8px 13px;font-size:12px;border-radius:8px}
 
 /* ── Choices ── */
-.choice{width:100%;text-align:left;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px 15px;font-size:14px;font-weight:500;color:#94a3b8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .14s;font-family:inherit}
-.choice:hover{border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.05);color:#e2e8f0}
-.choice.sel{border-color:#2dd4bf;background:rgba(45,212,191,.08);color:#fff;font-weight:600}
+.choice{width:100%;text-align:left;background:var(--cov1);border:1px solid var(--cborder);border-radius:10px;padding:13px 15px;font-size:14px;font-weight:500;color:var(--ct2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .14s;font-family:inherit}
+.choice:hover{border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.05);color:var(--ct1)}
+.choice.sel{border-color:#2dd4bf;background:rgba(45,212,191,.08);color:var(--ct1);font-weight:600}
 
 /* ── Inputs ── */
 input[type=text],input[type=email],input[type=password]{
-  font-family:inherit;font-size:14px;border:1px solid rgba(255,255,255,.08);
+  font-family:inherit;font-size:14px;border:1px solid var(--cborder2);
   border-radius:9px;padding:12px 14px;width:100%;outline:none;
-  transition:border-color .15s,box-shadow .15s;background:rgba(255,255,255,.03);color:#e2e8f0}
-input::placeholder{color:#1e293b}
+  transition:border-color .15s,box-shadow .15s;background:var(--cov1);color:var(--ct1)}
+input::placeholder{color:var(--ct5)}
 input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
 
 /* ── Progress ── */
-.prog-bar{height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-bar{height:2px;background:var(--cborder);border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;background:#2dd4bf;border-radius:2px;transition:width .45s cubic-bezier(.22,1,.36,1)}
 
 /* ── Modal ── */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:over .18s ease both}
-.modal{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:#0e1623;border:1px solid rgba(255,255,255,.08);border-radius:20px 20px 0 0;animation:sheet .28s cubic-bezier(.22,1,.36,1) both}
+.modal{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:var(--ccard);border:1px solid var(--cborder2);border-radius:20px 20px 0 0;animation:sheet .28s cubic-bezier(.22,1,.36,1) both}
 
 /* ── Action links ── */
 .alink{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:8px;padding:6px 10px;text-decoration:none;transition:all .13s;white-space:nowrap}
@@ -79,15 +81,15 @@ input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
 .alink-orange:hover{background:rgba(251,146,60,.14)}
 
 /* ── Dropdown ── */
-.dd-menu{position:absolute;right:0;top:calc(100%+6px);background:#111927;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;z-index:100;min-width:150px;box-shadow:0 16px 48px rgba(0,0,0,.6);animation:up .16s cubic-bezier(.22,1,.36,1) both}
-.dd-item{width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;border:none;background:none;font-family:inherit;color:#cbd5e1;text-align:left}
-.dd-item:hover{background:rgba(255,255,255,.05)}
+.dd-menu{position:absolute;right:0;top:calc(100%+6px);background:var(--ccard);border:1px solid var(--cborder2);border-radius:10px;overflow:hidden;z-index:100;min-width:150px;box-shadow:0 16px 48px rgba(0,0,0,.3);animation:up .16s cubic-bezier(.22,1,.36,1) both}
+.dd-item{width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;border:none;background:none;font-family:inherit;color:var(--ct2);text-align:left}
+.dd-item:hover{background:var(--cov2)}
 .dd-item.active{color:#2dd4bf;background:rgba(45,212,191,.07)}
 
 /* ── Sidebar layout ── */
 .app-shell{display:flex;flex-direction:column;min-height:100vh}
 .app-body{display:flex;flex:1}
-.sidebar{display:none;width:260px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.05);padding:24px 16px;flex-direction:column;gap:4px;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.sidebar{display:none;width:260px;flex-shrink:0;border-right:1px solid var(--cborder);padding:24px 16px;flex-direction:column;gap:4px;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;background:var(--cbg)}
 .main-col{flex:1;min-width:0;padding:28px 28px;max-width:780px}
 
 @media(min-width:900px){
@@ -106,8 +108,8 @@ input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
 }
 
 /* ── Sidebar nav items ── */
-.snav{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all .13s;font-size:13px;font-weight:600;color:#334155;border:none;background:none;font-family:inherit;width:100%;text-align:left}
-.snav:hover{background:rgba(255,255,255,.04);color:#64748b}
+.snav{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all .13s;font-size:13px;font-weight:600;color:var(--ct3);border:none;background:none;font-family:inherit;width:100%;text-align:left}
+.snav:hover{background:var(--cov2);color:var(--ct2)}
 .snav.active{background:rgba(45,212,191,.09);color:#2dd4bf}
 .snav-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 
@@ -116,7 +118,7 @@ input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
 .grad-gold{background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
 /* ── Mobile bottom bar ── */
-.mobile-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;padding:8px 8px calc(8px + env(safe-area-inset-bottom));gap:4px;border-top:1px solid rgba(255,255,255,.05);background:rgba(6,11,21,.96);backdrop-filter:blur(16px)}
+.mobile-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;padding:8px 8px calc(8px + env(safe-area-inset-bottom));gap:4px;border-top:1px solid var(--cborder);background:var(--cbg);backdrop-filter:blur(16px)}
 @media(min-width:900px){.mobile-bar{display:none}}
 .mobile-bar-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border:none;background:none;cursor:pointer;font-family:inherit;border-radius:9px;transition:background .13s}
 .mobile-bar-btn:hover,.mobile-bar-btn.active{background:rgba(45,212,191,.08)}
@@ -127,6 +129,16 @@ input:focus{border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
 /* ── Mobile padding for bottom bar ── */
 .has-mobile-bar{padding-bottom:80px}
 @media(min-width:900px){.has-mobile-bar{padding-bottom:0}}
+
+/* ── Light mode tweaks (variables handle most of it) ── */
+body.light .btn-secondary{color:#0d9488;border-color:rgba(13,148,136,.3)}
+body.light .btn-ghost{color:var(--ct3)}
+body.light .alink-teal{color:#0d9488}
+body.light .alink-blue{color:#0369a1;background:rgba(3,105,161,.08)}
+body.light .alink-purple{color:#7c3aed;background:rgba(124,58,237,.08)}
+body.light .alink-orange{color:#c2410c;background:rgba(194,65,12,.08)}
+body.light .snav.active{background:rgba(13,148,136,.1);color:#0d9488}
+body.light .mobile-bar-btn span:last-child{color:var(--ct3)}
 
 /* ── Print ── */
 @media print{
@@ -189,14 +201,14 @@ const LANGS=[{code:"en",flag:"🇺🇸",label:"English"},{code:"es",flag:"🇲�
 const TR={
 en:{
   name:"Calify",tagline:"California benefits, simplified.",
-  badge:"Free · Private · 2 min",
+  badge:"Free · 2 min",
   title:"Find out which California benefits you qualify for — in 2 minutes",
   sub:"Millions of Californians miss out on food, healthcare, and cash assistance every year simply because they don't know they qualify. Calify asks 9 simple questions and tells you exactly which programs are available to you — with direct links to apply.",
   what_is:"What is Calify?",
   what_body:"Calify is a free eligibility screener for California government assistance programs. It checks your household against 10 programs — including CalFresh (food), Medi-Cal (health), CalWORKs (cash), and utility discounts — and shows only the ones that match your situation. No sign-up, no data stored, nothing sent anywhere.",
-  priv:"🔒 Your answers never leave your device. Nothing is stored or sent.",
-  immig:"🛡️ Using these programs does not affect immigration status.",
-  immig_link:"USCIS confirms →",free:"✓ Completely free. No account needed.",
+  priv:"Your answers never leave your device. Nothing is stored or sent.",
+  immig:"Using these programs does not affect immigration status.",
+  immig_link:"USCIS confirms →",free:"Completely free. No account needed.",
   start:"Check My Eligibility →",nav_cta:"I'm a community navigator →",
   programs:"Programs we screen for",stats_label:"Bay Area impact",
   how_h_title:"How it works",
@@ -264,14 +276,14 @@ en:{
 },
 es:{
   name:"Calify",tagline:"Beneficios de California, simplificados.",
-  badge:"Gratis · Privado · 2 min",
+  badge:"Gratis · 2 min",
   title:"Descubre a qué beneficios de California tienes derecho — en 2 minutos",
   sub:"Millones de californianos no reciben ayuda para comida, salud y dinero simplemente porque no saben que califican. Calify hace 9 preguntas sencillas y te dice exactamente qué programas tienes disponibles — con enlaces directos para solicitar.",
   what_is:"¿Qué es Calify?",
   what_body:"Calify es una herramienta gratuita que evalúa tu elegibilidad para programas de asistencia del gobierno de California. Revisa tu hogar contra 10 programas — incluyendo CalFresh (comida), Medi-Cal (salud), CalWORKs (efectivo) y descuentos en servicios — y te muestra solo los que aplican a tu situación. Sin registro, sin datos guardados, sin envíos.",
-  priv:"🔒 Tus respuestas nunca salen de tu dispositivo. Nada se guarda ni envía.",
-  immig:"🛡️ Usar estos programas no afecta el estatus migratorio.",
-  immig_link:"USCIS lo confirma →",free:"✓ Completamente gratis. Sin cuenta necesaria.",
+  priv:"Tus respuestas nunca salen de tu dispositivo. Nada se guarda ni envía.",
+  immig:"Usar estos programas no afecta el estatus migratorio.",
+  immig_link:"USCIS lo confirma →",free:"Completamente gratis. Sin cuenta necesaria.",
   start:"Ver Mi Elegibilidad →",nav_cta:"Soy promotor/a comunitario/a →",
   programs:"Programas que evaluamos",stats_label:"Impacto en el Área de la Bahía",
   how_h_title:"Cómo funciona",
@@ -488,15 +500,15 @@ function UserMenu({lang,user,onLogout}){
   const ini=user.name.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
   return(
     <Dropdown trigger={open=>(
-      <button className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 transition-all" style={{border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",cursor:"pointer"}}>
+      <button className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 transition-all" style={{border:"1px solid rgba(255,255,255,.1)",background:"var(--cov2)",cursor:"pointer"}}>
         <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black" style={{background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff"}}>{ini}</div>
-        <span className="text-xs font-semibold max-w-[72px] truncate" style={{color:"#e2e8f0"}}>{user.name.split(" ")[0]}</span>
-        <span className="text-xs" style={{color:"#475569"}}>{open?"▴":"▾"}</span>
+        <span className="text-xs font-semibold max-w-[72px] truncate" style={{color:"var(--ct1)"}}>{user.name.split(" ")[0]}</span>
+        <span className="text-xs" style={{color:"var(--ct4)"}}>{open?"▴":"▾"}</span>
       </button>
     )}>
-      <div style={{padding:"10px 14px",borderBottom:"1px solid rgba(255,255,255,.07)"}}>
-        <p className="text-xs font-semibold truncate" style={{color:"#e2e8f0"}}>{user.name}</p>
-        <p className="text-xs truncate" style={{color:"#475569"}}>{user.email}</p>
+      <div style={{padding:"10px 14px",borderBottom:"1px solid var(--cborder)"}}>
+        <p className="text-xs font-semibold truncate" style={{color:"var(--ct1)"}}>{user.name}</p>
+        <p className="text-xs truncate" style={{color:"var(--ct4)"}}>{user.email}</p>
       </div>
       <button onClick={onLogout} className="dd-item" style={{color:"#f87171"}}>{t(lang,"logout")}</button>
     </Dropdown>
@@ -510,15 +522,15 @@ function ApplyActions({lang,prog,ans}){
   const cr=cd&&a.countyKey?cd.links[a.countyKey]:null;
   return(
     <div>
-      <p className="text-xs font-black uppercase tracking-widest mb-2" style={{color:"#334155"}}>{t(lang,"next")}</p>
+      <p className="text-xs font-black uppercase tracking-widest mb-2" style={{color:"var(--ct5)"}}>{t(lang,"next")}</p>
       <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-        {a.online&&<a href={a.online.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">🌐 {a.online[lang]||a.online.en}</a>}
-        {a.altOnline&&<a href={a.altOnline.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">🌐 {a.altOnline[lang]||a.altOnline.en}</a>}
-        {a.extra&&(()=>{const ex=(a.extra[lang]||a.extra.en)(ans);return ex?<a key="v" href={ex.url} target="_blank" rel="noopener noreferrer" className="alink alink-orange">📍 {ex.label}</a>:null;})()}
-        {a.phone&&<a href={`tel:${a.phone.number.replace(/[^\d]/g,"")}`} className="alink alink-blue">📞 {a.phone.label[lang]}: {a.phone.number}</a>}
-        {cr?.phone&&cr.phone!==a.phone?.number&&<a href={`tel:${cr.phone.replace(/[^\d]/g,"")}`} className="alink alink-blue">📍 {cd.county}: {cr.phone}</a>}
-        {cr?.url&&cr.url!==a.online?.url&&<a href={cr.url} target="_blank" rel="noopener noreferrer" className="alink alink-purple">🏛️ {t(lang,"county_r",{county:cd.county})}</a>}
-        {cr?.office&&<a href={`https://maps.google.com/?q=${encodeURIComponent(cr.office)}`} target="_blank" rel="noopener noreferrer" className="alink alink-purple">🚶 {cr.office}</a>}
+        {a.online&&<a href={a.online.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">{a.online[lang]||a.online.en}</a>}
+        {a.altOnline&&<a href={a.altOnline.url} target="_blank" rel="noopener noreferrer" className="alink alink-teal">{a.altOnline[lang]||a.altOnline.en}</a>}
+        {a.extra&&(()=>{const ex=(a.extra[lang]||a.extra.en)(ans);return ex?<a key="v" href={ex.url} target="_blank" rel="noopener noreferrer" className="alink alink-orange">{ex.label}</a>:null;})()}
+        {a.phone&&<a href={`tel:${a.phone.number.replace(/[^\d]/g,"")}`} className="alink alink-blue">{a.phone.label[lang]}: {a.phone.number}</a>}
+        {cr?.phone&&cr.phone!==a.phone?.number&&<a href={`tel:${cr.phone.replace(/[^\d]/g,"")}`} className="alink alink-blue">{cd.county}: {cr.phone}</a>}
+        {cr?.url&&cr.url!==a.online?.url&&<a href={cr.url} target="_blank" rel="noopener noreferrer" className="alink alink-purple">{t(lang,"county_r",{county:cd.county})}</a>}
+        {cr?.office&&<a href={`https://maps.google.com/?q=${encodeURIComponent(cr.office)}`} target="_blank" rel="noopener noreferrer" className="alink alink-purple">{cr.office}</a>}
       </div>
     </div>
   );
@@ -531,28 +543,27 @@ function PCard({lang,p,ans,idx}){
   const ef=p.est?.[lang]||p.est?.en;
   const wf=p.why?.[lang]||p.why?.en;
   return(
-    <div className={`card-accent overflow-hidden au d${Math.min(idx+1,6)}`} style={{borderLeft:`3px solid ${cc}`}}>
+    <div className={`card-accent overflow-hidden au d${Math.min(idx+1,6)}`}>
       <div style={{padding:"16px 18px",display:"flex",flexDirection:"column",gap:14}}>
         <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}>
-            <div style={{width:40,height:40,borderRadius:10,background:`${cc}18`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{p.icon}</div>
             <div>
-              <div style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:cc}}>{catLabel(lang,p.cat)}</div>
-              <h3 style={{fontSize:15,fontWeight:800,color:"#f1f5f9",margin:"2px 0 0",lineHeight:1.3}}>{p.name[lang]||p.name.en}</h3>
+              <div style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"#2dd4bf"}}>{catLabel(lang,p.cat)}</div>
+              <h3 style={{fontSize:15,fontWeight:800,color:"var(--ct1)",margin:"2px 0 0",lineHeight:1.3}}>{p.name[lang]||p.name.en}</h3>
             </div>
           </div>
-          {ef&&<div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:11,color:"#334155"}}>{t(lang,"est")}</div><div style={{fontSize:15,fontWeight:900,color:cc,marginTop:2}}>{ef(ans)}</div></div>}
+          {ef&&<div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:11,color:"var(--ct5)"}}>{t(lang,"est")}</div><div style={{fontSize:15,fontWeight:900,color:cc,marginTop:2}}>{ef(ans)}</div></div>}
         </div>
-        <p style={{fontSize:13,color:"#64748b",lineHeight:1.6,margin:0}}>{p.desc[lang]||p.desc.en}</p>
-        <div style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",borderRadius:10,padding:"11px 13px"}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"#334155",marginBottom:5}}>{t(lang,"why")}</p>
-          <p style={{fontSize:13,color:"#94a3b8",lineHeight:1.6,margin:0}}>{wf?.(ans)}</p>
+        <p style={{fontSize:13,color:"var(--ct3)",lineHeight:1.6,margin:0}}>{p.desc[lang]||p.desc.en}</p>
+        <div style={{background:"var(--cov1)",border:"1px solid rgba(255,255,255,.06)",borderRadius:10,padding:"11px 13px"}}>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"var(--ct5)",marginBottom:5}}>{t(lang,"why")}</p>
+          <p style={{fontSize:13,color:"var(--ct2)",lineHeight:1.6,margin:0}}>{wf?.(ans)}</p>
         </div>
         <ApplyActions lang={lang} prog={p} ans={ans}/>
       </div>
-      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",padding:"9px 18px"}}>
-        <button onClick={()=>setOpen(o=>!o)} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:700,color:"#334155",width:"100%",textAlign:"left"}}>{t(lang,"imm_toggle")} {open?"▴":"▾"}</button>
-        {open&&<div className="au" style={{marginTop:8,background:"rgba(251,191,36,.06)",border:"1px solid rgba(251,191,36,.12)",borderRadius:9,padding:"10px 12px"}}><p style={{fontSize:12,color:"#c9a84c",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{p.imm[lang]||p.imm.en}</p><a href={p.src} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:"#475569",marginTop:6,display:"block"}}>{p.src}</a></div>}
+      <div style={{borderTop:"1px solid var(--cborder)",padding:"9px 18px"}}>
+        <button onClick={()=>setOpen(o=>!o)} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:700,color:"var(--ct5)",width:"100%",textAlign:"left"}}>{t(lang,"imm_toggle")} {open?"▴":"▾"}</button>
+        {open&&<div className="au" style={{marginTop:8,background:"rgba(251,191,36,.06)",border:"1px solid rgba(251,191,36,.12)",borderRadius:9,padding:"10px 12px"}}><p style={{fontSize:12,color:"#c9a84c",lineHeight:1.6,margin:0,fontStyle:"italic"}}>{p.imm[lang]||p.imm.en}</p><a href={p.src} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:"var(--ct4)",marginTop:6,display:"block"}}>{p.src}</a></div>}
       </div>
     </div>
   );
@@ -562,14 +573,14 @@ function PCard({lang,p,ans,idx}){
 function HowCard({lang,title,steps,note}){
   return(
     <div className="surface" style={{padding:"18px 20px"}}>
-      <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",marginBottom:14}}>{title||t(lang,"how_h_title")}</p>
+      <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct5)",marginBottom:14}}>{title||t(lang,"how_h_title")}</p>
       {steps.map((s,i)=>(
         <div key={i} style={{display:"flex",gap:12,marginBottom:i<steps.length-1?12:0}}>
           <div style={{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff",fontSize:11,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>{i+1}</div>
-          <p style={{fontSize:13,color:"#94a3b8",lineHeight:1.6,margin:0}}>{s}</p>
+          <p style={{fontSize:13,color:"var(--ct2)",lineHeight:1.6,margin:0}}>{s}</p>
         </div>
       ))}
-      {note&&<p style={{fontSize:12,color:"#1e293b",marginTop:12,lineHeight:1.5}}>{note}</p>}
+      {note&&<p style={{fontSize:12,color:"var(--ct6)",marginTop:12,lineHeight:1.5}}>{note}</p>}
     </div>
   );
 }
@@ -596,25 +607,25 @@ function AuthModal({lang,tab:initTab,onAuth,onClose}){
       if(r.err)return bad(r.err);onAuth(r.user);
     }
   };
-  const IL={fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"#334155",display:"block",marginBottom:6};
+  const IL={fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"var(--ct5)",display:"block",marginBottom:6};
   return(
     <div className="modal-bg" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
       <div className="modal">
-        <div style={{display:"flex",justifyContent:"center",padding:"12px 0 8px"}}><div style={{width:36,height:4,background:"rgba(255,255,255,.1)",borderRadius:2}}/></div>
-        <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,.07)"}}>
+        <div style={{display:"flex",justifyContent:"center",padding:"12px 0 8px"}}><div style={{width:36,height:4,background:"var(--cborder2)",borderRadius:2}}/></div>
+        <div style={{display:"flex",borderBottom:"1px solid var(--cborder)"}}>
           {["login","signup"].map(k=>(
-            <button key={k} onClick={()=>{setTab(k);setErr("");}} style={{flex:1,padding:"14px",fontSize:13,fontWeight:700,background:"none",border:"none",borderBottom:`2px solid ${tab===k?"#2dd4bf":"transparent"}`,color:tab===k?"#2dd4bf":"#475569",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,k)}</button>
+            <button key={k} onClick={()=>{setTab(k);setErr("");}} style={{flex:1,padding:"14px",fontSize:13,fontWeight:700,background:"none",border:"none",borderBottom:`2px solid ${tab===k?"#2dd4bf":"transparent"}`,color:tab===k?"#2dd4bf":"var(--ct4)",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,k)}</button>
           ))}
         </div>
         <div style={{padding:"20px 22px"}}>
-          <p style={{fontSize:13,color:"#475569",marginBottom:16}}>{t(lang,`${tab}_sub`)}</p>
+          <p style={{fontSize:13,color:"var(--ct4)",marginBottom:16}}>{t(lang,`${tab}_sub`)}</p>
           <form onSubmit={submit} style={{display:"flex",flexDirection:"column",gap:12}}>
             {tab==="signup"&&<div className="au"><label style={IL}>{t(lang,"name_l")}</label><input type="text" value={f.name} onChange={e=>set("name",e.target.value)} placeholder="Your name" required autoComplete="name"/></div>}
             <div><label style={IL}>{t(lang,"email_l")}</label><input type="email" value={f.email} onChange={e=>set("email",e.target.value)} placeholder="you@email.com" required autoComplete="email"/></div>
             <div>
               <label style={IL}>{t(lang,"pw_l")}</label>
               <input type="password" value={f.pw} onChange={e=>set("pw",e.target.value)} placeholder="••••••••" required autoComplete={tab==="login"?"current-password":"new-password"}/>
-              {tab==="signup"&&f.pw&&<div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}><div style={{display:"flex",gap:3,flex:1}}>{[0,1,2,3].map(i=><div key={i} style={{height:3,flex:1,borderRadius:2,background:i<score?SC[Math.max(0,score-1)]:"rgba(255,255,255,.08)",transition:"background .3s"}}/>)}</div><span style={{fontSize:11,color:"#475569"}}>{SL[lang]?.[score]}</span></div>}
+              {tab==="signup"&&f.pw&&<div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}><div style={{display:"flex",gap:3,flex:1}}>{[0,1,2,3].map(i=><div key={i} style={{height:3,flex:1,borderRadius:2,background:i<score?SC[Math.max(0,score-1)]:"var(--cborder2)",transition:"background .3s"}}/>)}</div><span style={{fontSize:11,color:"var(--ct4)"}}>{SL[lang]?.[score]}</span></div>}
             </div>
             {tab==="signup"&&<div className="au"><label style={IL}>{t(lang,"conf_l")}</label><input type="password" value={f.conf} onChange={e=>set("conf",e.target.value)} placeholder="••••••••" required autoComplete="new-password" style={{borderColor:f.conf&&f.conf!==f.pw?"rgba(239,68,68,.5)":""}}/></div>}
             {err&&<div className={shk?"shake":""} style={{fontSize:13,color:"#fca5a5",background:"rgba(239,68,68,.1)",border:"1px solid rgba(239,68,68,.2)",borderRadius:9,padding:"10px 13px"}}>{err}</div>}
@@ -622,10 +633,10 @@ function AuthModal({lang,tab:initTab,onAuth,onClose}){
           </form>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12,marginTop:16}}>
             <button onClick={()=>{setTab(tab==="login"?"signup":"login");setErr("");}} style={{fontSize:13,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,tab==="login"?"to_signup":"to_login")}</button>
-            <div style={{display:"flex",alignItems:"center",gap:12,width:"100%"}}><div style={{flex:1,height:1,background:"rgba(255,255,255,.06)"}}/><span style={{fontSize:11,color:"#1e293b"}}>{t(lang,"or")}</span><div style={{flex:1,height:1,background:"rgba(255,255,255,.06)"}}/></div>
-            <button onClick={onClose} style={{fontSize:13,color:"#334155",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,"guest")}</button>
+            <div style={{display:"flex",alignItems:"center",gap:12,width:"100%"}}><div style={{flex:1,height:1,background:"var(--cborder)"}}/><span style={{fontSize:11,color:"var(--ct6)"}}>{t(lang,"or")}</span><div style={{flex:1,height:1,background:"var(--cborder)"}}/></div>
+            <button onClick={onClose} style={{fontSize:13,color:"var(--ct5)",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,"guest")}</button>
           </div>
-          <p style={{fontSize:11,color:"#1e293b",textAlign:"center",marginTop:14,lineHeight:1.6}}>{t(lang,"auth_priv")}</p>
+          <p style={{fontSize:11,color:"var(--ct6)",textAlign:"center",marginTop:14,lineHeight:1.6}}>{t(lang,"auth_priv")}</p>
           <p style={{fontSize:11,color:"#78350f",textAlign:"center",marginTop:4}}>{t(lang,"auth_demo")}</p>
         </div>
       </div>
@@ -657,21 +668,21 @@ function Questionnaire({lang,onDone}){
       {/* Progress */}
       <div>
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
-          {step>0&&<button onClick={bwd} style={{width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",color:"#64748b",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>‹</button>}
+          {step>0&&<button onClick={bwd} style={{width:36,height:36,borderRadius:"50%",border:"1px solid rgba(255,255,255,.1)",background:"var(--cov2)",color:"var(--ct3)",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>‹</button>}
           <div style={{flex:1}}>
             <div className="prog-bar"><div className="prog-fill" style={{width:`${pct}%`}}/></div>
           </div>
-          <span style={{fontSize:12,fontWeight:700,color:"#334155",flexShrink:0}}>{step+1}/{N}</span>
+          <span style={{fontSize:12,fontWeight:700,color:"var(--ct5)",flexShrink:0}}>{step+1}/{N}</span>
         </div>
         {/* Step dots */}
         <div style={{display:"flex",gap:4,paddingLeft:step>0?48:0}}>
-          {STEPS.map((_,i)=><div key={i} style={{height:2,flex:1,borderRadius:1,background:i<=step?"linear-gradient(90deg,#2dd4bf,#38bdf8)":"rgba(255,255,255,.06)",transition:"background .3s"}}/>)}
+          {STEPS.map((_,i)=><div key={i} style={{height:2,flex:1,borderRadius:1,background:i<=step?"linear-gradient(90deg,#2dd4bf,#38bdf8)":"var(--cborder)",transition:"background .3s"}}/>)}
         </div>
       </div>
       <div key={k} className={cls}>
         {s==="size"&&<QStep q={t(lang,"q_size")} h={t(lang,"q_size_h")}><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>{t(lang,"sizes").map((l,i)=><Cho key={i} label={l} sel={a.size===i} onClick={()=>{set("size",i);setTimeout(fwd,180);}} delay={i}/>)}</div></QStep>}
         {s==="income"&&<QStep q={t(lang,"q_income")} h={t(lang,"q_income_h")}><div style={{display:"flex",flexDirection:"column",gap:6}}>{inc.map((l,i)=><Cho key={i} label={l} sel={a.incomeIdx===i} delay={i} onClick={()=>go("incomeIdx",i)}/>)}</div></QStep>}
-        {s==="kids"&&<QStep q={t(lang,"q_kids")}><div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><Cho label={t(lang,"yes")} sel={a.hasKids===true} onClick={()=>set("hasKids",true)}/><Cho label={t(lang,"no")} sel={a.hasKids===false} onClick={()=>go("hasKids",false)}/></div>{a.hasKids&&<div className="au"><p style={{fontSize:12,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em",color:"#334155",marginBottom:6}}>{t(lang,"q_kids_n")}</p><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>{cnt.map((l,i)=><Cho key={i} label={l} sel={a.kidsCount===i} onClick={()=>{set("kidsCount",i);setTimeout(fwd,180);}} delay={i}/>)}</div></div>}</div></QStep>}
+        {s==="kids"&&<QStep q={t(lang,"q_kids")}><div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><Cho label={t(lang,"yes")} sel={a.hasKids===true} onClick={()=>set("hasKids",true)}/><Cho label={t(lang,"no")} sel={a.hasKids===false} onClick={()=>go("hasKids",false)}/></div>{a.hasKids&&<div className="au"><p style={{fontSize:12,fontWeight:800,textTransform:"uppercase",letterSpacing:".06em",color:"var(--ct5)",marginBottom:6}}>{t(lang,"q_kids_n")}</p><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>{cnt.map((l,i)=><Cho key={i} label={l} sel={a.kidsCount===i} onClick={()=>{set("kidsCount",i);setTimeout(fwd,180);}} delay={i}/>)}</div></div>}</div></QStep>}
         {s==="preg"&&<QStep q={t(lang,"q_preg")}><YNGrid yes={a.pregnant===true} onY={()=>go("pregnant",true)} onN={()=>go("pregnant",false)} lang={lang}/></QStep>}
         {s==="senior"&&<QStep q={t(lang,"q_senior")}><YNGrid yes={a.senior===true} onY={()=>go("senior",true)} onN={()=>go("senior",false)} lang={lang}/></QStep>}
         {s==="dis"&&<QStep q={t(lang,"q_dis")}><YNGrid yes={a.dis===true} onY={()=>go("dis",true)} onN={()=>go("dis",false)} lang={lang}/></QStep>}
@@ -679,7 +690,7 @@ function Questionnaire({lang,onDone}){
         {s==="tax"&&<QStep q={t(lang,"q_tax")} h={t(lang,"q_tax_h")}><div style={{display:"flex",flexDirection:"column",gap:6}}>{[t(lang,"tax_y"),t(lang,"tax_n"),t(lang,"tax_u")].map((l,i)=><Cho key={i} label={l} sel={(a.taxes===true?0:a.taxes===false?1:a.taxes==="u"?2:null)===i} delay={i} onClick={()=>{set("taxes",[true,false,"u"][i]);setTimeout(fwd,180);}}/>)}</div></QStep>}
         {s==="zip"&&<QStep q={t(lang,"q_zip")} h={t(lang,"q_zip_h")}>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            {a.zip&&getCounty(a.zip)&&<div className="au" style={{background:"rgba(45,212,191,.1)",border:"1px solid rgba(45,212,191,.2)",borderRadius:9,padding:"9px 13px",fontSize:13,fontWeight:700,color:"#2dd4bf"}}>📍 {getCounty(a.zip)} County</div>}
+            {a.zip&&getCounty(a.zip)&&<div className="au" style={{background:"rgba(45,212,191,.1)",border:"1px solid rgba(45,212,191,.2)",borderRadius:9,padding:"9px 13px",fontSize:13,fontWeight:700,color:"#2dd4bf"}}>{getCounty(a.zip)} County</div>}
             <input type="text" inputMode="numeric" maxLength={5} value={a.zip} onChange={e=>set("zip",e.target.value.replace(/\D/g,""))} placeholder="e.g. 94103"/>
             <button onClick={()=>onDone(final())} className="btn btn-primary" style={{width:"100%"}}>{t(lang,"results_btn")}</button>
             <button onClick={()=>{set("zip","");onDone(final());}} className="btn btn-ghost" style={{width:"100%"}}>{t(lang,"skip")} →</button>
@@ -692,7 +703,7 @@ function Questionnaire({lang,onDone}){
 function QStep({q,h,children}){
   return(
     <div style={{display:"flex",flexDirection:"column",gap:16}}>
-      <div><h2 style={{fontSize:22,fontWeight:900,color:"#f1f5f9",margin:0,lineHeight:1.3}}>{q}</h2>{h&&<p style={{fontSize:13,color:"#475569",margin:"6px 0 0",lineHeight:1.5}}>{h}</p>}</div>
+      <div><h2 style={{fontSize:22,fontWeight:900,color:"var(--ct1)",margin:0,lineHeight:1.3}}>{q}</h2>{h&&<p style={{fontSize:13,color:"var(--ct4)",margin:"6px 0 0",lineHeight:1.5}}>{h}</p>}</div>
       {children}
     </div>
   );
@@ -728,20 +739,20 @@ function Results({lang,ans,progs,navMode,logged,onLog,onBack,onShare,onPrint}){
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           {/* Summary */}
           <div className="au card-accent" style={{padding:"20px 22px",background:"linear-gradient(135deg,rgba(13,148,136,.2),rgba(8,145,178,.12))"}}>
-            {cd&&<div style={{marginBottom:14,fontSize:12,fontWeight:700,color:"#2dd4bf",display:"flex",alignItems:"center",gap:6}}>📍 {cd.county} County — {lang==="en"?"local resources shown below":"recursos locales abajo"}</div>}
+            {cd&&<div style={{marginBottom:14,fontSize:12,fontWeight:700,color:"#2dd4bf",display:"flex",alignItems:"center",gap:6}}>{cd.county} County — {lang==="en"?"local resources shown below":"recursos locales abajo"}</div>}
             <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:16}}>
               <div>
                 <div style={{fontSize:52,fontWeight:900,color:"#fff",lineHeight:1}}>{progs.length}</div>
-                <div style={{fontSize:13,color:"#64748b",marginTop:3}}>{lang==="en"?`program${progs.length!==1?"s":""} likely match`:`programa${progs.length!==1?"s":""} probablemente`}</div>
+                <div style={{fontSize:13,color:"var(--ct3)",marginTop:3}}>{lang==="en"?`program${progs.length!==1?"s":""} likely match`:`programa${progs.length!==1?"s":""} probablemente`}</div>
               </div>
               {estTotal>100&&<div style={{textAlign:"right"}}>
-                <div style={{fontSize:11,color:"#334155",marginBottom:3}}>{lang==="en"?"Potential value":"Valor potencial"}</div>
+                <div style={{fontSize:11,color:"var(--ct5)",marginBottom:3}}>{lang==="en"?"Potential value":"Valor potencial"}</div>
                 <div style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>${estTotal.toLocaleString()}+/{lang==="en"?"yr":"año"}</div>
               </div>}
             </div>
           </div>
-          <div className="au"><h1 style={{fontSize:24,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"res_title")}</h1><p style={{fontSize:13,color:"#475569",margin:"4px 0 0"}}>{t(lang,"res_sub")}</p></div>
-          {progs.length===0&&<div className="card" style={{padding:"20px"}}><p style={{fontWeight:700,color:"#f1f5f9",margin:0}}>{t(lang,"no_res")}</p><p style={{fontSize:13,color:"#475569",margin:"6px 0 0"}}>{t(lang,"no_res_sub")}</p></div>}
+          <div className="au"><h1 style={{fontSize:24,fontWeight:900,color:"var(--ct1)",margin:0}}>{t(lang,"res_title")}</h1><p style={{fontSize:13,color:"var(--ct4)",margin:"4px 0 0"}}>{t(lang,"res_sub")}</p></div>
+          {progs.length===0&&<div className="card" style={{padding:"20px"}}><p style={{fontWeight:700,color:"var(--ct1)",margin:0}}>{t(lang,"no_res")}</p><p style={{fontSize:13,color:"var(--ct4)",margin:"6px 0 0"}}>{t(lang,"no_res_sub")}</p></div>}
           {Object.entries(grouped).map(([cat,items])=>(
             <div key={cat} style={{display:"flex",flexDirection:"column",gap:10}}>
               <div style={{display:"flex",alignItems:"center",gap:6,padding:"4px 0"}}>
@@ -753,8 +764,8 @@ function Results({lang,ans,progs,navMode,logged,onLog,onBack,onShare,onPrint}){
           ))}
           {/* More stub */}
           <div className="no-print" style={{border:"1px dashed rgba(255,255,255,.07)",borderRadius:12,padding:"14px 16px"}}>
-            <p style={{fontSize:12,fontWeight:700,color:"#1e293b",margin:0}}>{t(lang,"more")}</p>
-            <p style={{fontSize:12,color:"#0f172a",margin:"3px 0 0"}}>{t(lang,"more_sub")}</p>
+            <p style={{fontSize:12,fontWeight:700,color:"var(--ct6)",margin:0}}>{t(lang,"more")}</p>
+            <p style={{fontSize:12,color:"var(--ct1)",margin:"3px 0 0"}}>{t(lang,"more_sub")}</p>
           </div>
         </div>
 
@@ -763,20 +774,20 @@ function Results({lang,ans,progs,navMode,logged,onLog,onBack,onShare,onPrint}){
           {/* Public charge */}
           <div className="card" style={{padding:"16px"}}>
             <div style={{display:"flex",gap:12}}>
-              <span style={{fontSize:20,flexShrink:0}}>🛡️</span>
-              <div><p style={{fontSize:13,fontWeight:700,color:"#f1f5f9",margin:0}}>{t(lang,"pc_title")}</p><p style={{fontSize:12,color:"#475569",margin:"5px 0 0",lineHeight:1.6}}>{t(lang,"pc_body")}</p><a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{fontSize:12,color:"#2dd4bf",marginTop:6,display:"inline-block"}}>{t(lang,"pc_link")}</a></div>
+              <span style={{flexShrink:0,display:"flex",alignItems:"center",marginTop:2}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+              <div><p style={{fontSize:13,fontWeight:700,color:"var(--ct1)",margin:0}}>{t(lang,"pc_title")}</p><p style={{fontSize:12,color:"var(--ct4)",margin:"5px 0 0",lineHeight:1.6}}>{t(lang,"pc_body")}</p><a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{fontSize:12,color:"#2dd4bf",marginTop:6,display:"inline-block"}}>{t(lang,"pc_link")}</a></div>
             </div>
           </div>
           {/* Free help */}
           <div className="card" style={{padding:"16px"}}>
-            <h3 style={{fontSize:15,fontWeight:800,color:"#f1f5f9",margin:"0 0 4px"}}>{t(lang,"hoff_title")}</h3>
-            <p style={{fontSize:12,color:"#475569",margin:"0 0 12px"}}>{t(lang,"hoff_sub")}</p>
+            <h3 style={{fontSize:15,fontWeight:800,color:"var(--ct1)",margin:"0 0 4px"}}>{t(lang,"hoff_title")}</h3>
+            <p style={{fontSize:12,color:"var(--ct4)",margin:"0 0 12px"}}>{t(lang,"hoff_sub")}</p>
             {PARTNERS.map((p,i)=>(
               <div key={p.web} style={{display:"flex",gap:10,paddingBottom:i<PARTNERS.length-1?11:0,marginBottom:i<PARTNERS.length-1?11:0,borderBottom:i<PARTNERS.length-1?"1px solid rgba(255,255,255,.05)":"none"}}>
                 <span style={{fontSize:18,flexShrink:0,marginTop:1}}>{p.emoji}</span>
                 <div style={{flex:1,minWidth:0}}>
-                  <p style={{fontSize:12,fontWeight:700,color:"#e2e8f0",margin:0}}>{p.name[lang]||p.name.en}</p>
-                  <p style={{fontSize:11,color:"#475569",margin:"2px 0 5px",lineHeight:1.5}}>{p.desc[lang]||p.desc.en}</p>
+                  <p style={{fontSize:12,fontWeight:700,color:"var(--ct1)",margin:0}}>{p.name[lang]||p.name.en}</p>
+                  <p style={{fontSize:11,color:"var(--ct4)",margin:"2px 0 5px",lineHeight:1.5}}>{p.desc[lang]||p.desc.en}</p>
                   <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
                     <a href={`tel:${p.phone.replace(/[^\d]/g,"")}`} className="alink alink-blue" style={{fontSize:11,padding:"5px 9px"}}>{t(lang,"call")} {p.phone}</a>
                     <a href={p.web} target="_blank" rel="noopener noreferrer" className="alink alink-teal" style={{fontSize:11,padding:"5px 9px"}}>{t(lang,"web")} →</a>
@@ -784,7 +795,7 @@ function Results({lang,ans,progs,navMode,logged,onLog,onBack,onShare,onPrint}){
                 </div>
               </div>
             ))}
-            <p style={{fontSize:11,color:"#1e293b",textAlign:"center",marginTop:12}}>{t(lang,"dial")}</p>
+            <p style={{fontSize:11,color:"var(--ct6)",textAlign:"center",marginTop:12}}>{t(lang,"dial")}</p>
           </div>
           {/* Navigator log */}
           {navMode&&<div className="card" style={{padding:"14px"}}>{logged?<p style={{fontSize:13,fontWeight:800,textAlign:"center",color:"#2dd4bf",margin:0}}>{t(lang,"nav_logged")}</p>:<button onClick={onLog} className="btn btn-primary" style={{width:"100%"}}>{t(lang,"nav_log")}</button>}</div>}
@@ -811,26 +822,33 @@ function NavDash({lang,user,onNew,onShare,onShowAuth}){
   const fmt=iso=>new Date(iso).toLocaleDateString(lang==="es"?"es-US":"en-US",{month:"short",day:"numeric"});
   return(
     <div style={{display:"flex",flexDirection:"column",gap:16,paddingBottom:80,maxWidth:760,margin:"0 auto"}}>
-      <div><h1 style={{fontSize:26,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"nav_title")}</h1><p style={{fontSize:14,color:"#475569",margin:"4px 0 0"}}>{t(lang,"nav_sub")}</p></div>
+      <div><h1 style={{fontSize:26,fontWeight:900,color:"var(--ct1)",margin:0}}>{t(lang,"nav_title")}</h1><p style={{fontSize:14,color:"var(--ct4)",margin:"4px 0 0"}}>{t(lang,"nav_sub")}</p></div>
+      <div style={{background:"rgba(56,189,248,.07)",border:"1px solid rgba(56,189,248,.18)",borderRadius:12,padding:"16px 18px",display:"flex",gap:14,alignItems:"flex-start"}}>
+        <svg style={{flexShrink:0,marginTop:2}} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <p style={{fontSize:13,fontWeight:800,color:"var(--ct1)",margin:"0 0 4px"}}>{lang==="en"?"What is Navigator Mode?":"¿Qué es el Modo Navegador?"}</p>
+          <p style={{fontSize:13,color:"var(--ct3)",margin:0,lineHeight:1.6}}>{lang==="en"?"Navigator Mode is for community workers, social workers, and volunteers who help others apply for benefits. You can screen multiple households in one session, track how many people you've helped, and share results directly with clients — without needing to log in.":"El Modo Navegador es para trabajadores comunitarios, trabajadores sociales y voluntarios que ayudan a otros a solicitar beneficios. Puedes evaluar varios hogares en una sesión, rastrear a cuántas personas has ayudado y compartir resultados directamente con los clientes, sin necesidad de iniciar sesión."}</p>
+        </div>
+      </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16}}>
         <HowCard lang={lang} title={t(lang,"how_n_title")} steps={[t(lang,"how_n_1"),t(lang,"how_n_2"),t(lang,"how_n_3")]} note={t(lang,"how_n_note")}/>
         <div className="card" style={{padding:"20px"}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 14px"}}>{t(lang,"nav_impact")}</p>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct5)",margin:"0 0 14px"}}>{t(lang,"nav_impact")}</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
-            <div style={{background:"rgba(255,255,255,.04)",borderRadius:10,padding:"14px",textAlign:"center"}}>
-              <div style={{fontSize:42,fontWeight:900,color:"#f1f5f9",lineHeight:1}}>{today}</div>
-              <div style={{fontSize:11,color:"#475569",marginTop:4}}>{t(lang,"nav_today")}</div>
+            <div style={{background:"var(--cov2)",borderRadius:10,padding:"14px",textAlign:"center"}}>
+              <div style={{fontSize:42,fontWeight:900,color:"var(--ct1)",lineHeight:1}}>{today}</div>
+              <div style={{fontSize:11,color:"var(--ct4)",marginTop:4}}>{t(lang,"nav_today")}</div>
             </div>
-            <div style={{background:"rgba(255,255,255,.04)",borderRadius:10,padding:"14px",textAlign:"center"}}>
+            <div style={{background:"var(--cov2)",borderRadius:10,padding:"14px",textAlign:"center"}}>
               <div style={{fontSize:42,fontWeight:900,lineHeight:1,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{total}</div>
-              <div style={{fontSize:11,color:"#475569",marginTop:4}}>{t(lang,"nav_total")}</div>
+              <div style={{fontSize:11,color:"var(--ct4)",marginTop:4}}>{t(lang,"nav_total")}</div>
             </div>
           </div>
-          {user&&sessions.length>0&&sessions.map((s,i)=><div key={s.id||i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:i<sessions.length-1?"1px solid rgba(255,255,255,.04)":"none"}}><span style={{fontSize:12,color:"#475569"}}>{fmt(s.date)}</span><span style={{fontSize:12,fontWeight:700,color:"#2dd4bf"}}>{s.count} {t(lang,"nav_hh")}</span></div>)}
-          {user&&sessions.length===0&&<p style={{fontSize:12,color:"#1e293b",textAlign:"center"}}>{t(lang,"nav_no_hist")}</p>}
+          {user&&sessions.length>0&&sessions.map((s,i)=><div key={s.id||i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:i<sessions.length-1?"1px solid rgba(255,255,255,.04)":"none"}}><span style={{fontSize:12,color:"var(--ct4)"}}>{fmt(s.date)}</span><span style={{fontSize:12,fontWeight:700,color:"#2dd4bf"}}>{s.count} {t(lang,"nav_hh")}</span></div>)}
+          {user&&sessions.length===0&&<p style={{fontSize:12,color:"var(--ct6)",textAlign:"center"}}>{t(lang,"nav_no_hist")}</p>}
           {!user&&<div style={{background:"rgba(45,212,191,.06)",border:"1px solid rgba(45,212,191,.15)",borderRadius:9,padding:"12px",marginTop:4}}>
-            <p style={{fontSize:13,fontWeight:700,color:"#f1f5f9",margin:"0 0 3px"}}>{t(lang,"nav_guest_title")}</p>
-            <p style={{fontSize:12,color:"#475569",margin:"0 0 8px",lineHeight:1.5}}>{t(lang,"nav_guest_sub")}</p>
+            <p style={{fontSize:13,fontWeight:700,color:"var(--ct1)",margin:"0 0 3px"}}>{t(lang,"nav_guest_title")}</p>
+            <p style={{fontSize:12,color:"var(--ct4)",margin:"0 0 8px",lineHeight:1.5}}>{t(lang,"nav_guest_sub")}</p>
             <button onClick={onShowAuth} style={{fontSize:12,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{t(lang,"signup")} →</button>
           </div>}
         </div>
@@ -854,20 +872,20 @@ function SharePage({lang,onBack}){
   return(
     <div style={{display:"flex",flexDirection:"column",gap:16,paddingBottom:80,maxWidth:600,margin:"0 auto"}}>
       <div className="printable" style={{textAlign:"center",padding:"20px 12px",color:"#000"}}><div style={{fontSize:"22pt",fontWeight:900,marginBottom:10}}>{t(lang,"sh_head")}</div><div style={{fontSize:"12pt",color:"#444",marginBottom:14}}>{t(lang,"sh_body")}</div><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&margin=10`} alt="QR" style={{display:"block",margin:"0 auto 12px"}} width="200" height="200"/><div style={{fontSize:"9pt",color:"#666"}}>{t(lang,"sh_places")}</div></div>
-      <div className="no-print"><h1 style={{fontSize:24,fontWeight:900,color:"#f1f5f9",margin:0}}>{t(lang,"sh_title")}</h1><p style={{fontSize:13,color:"#475569",margin:"4px 0 0"}}>{t(lang,"sh_sub")}</p></div>
+      <div className="no-print"><h1 style={{fontSize:24,fontWeight:900,color:"var(--ct1)",margin:0}}>{t(lang,"sh_title")}</h1><p style={{fontSize:13,color:"var(--ct4)",margin:"4px 0 0"}}>{t(lang,"sh_sub")}</p></div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:14}} className="no-print">
         <div className="card au" style={{padding:"20px",display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:0}}>{t(lang,"sh_qr")}</p>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct5)",margin:0}}>{t(lang,"sh_qr")}</p>
           <div style={{borderRadius:14,overflow:"hidden",border:"1px solid rgba(45,212,191,.2)",padding:10,background:"#080d18"}}><img src={qr} alt="QR" width={sz} height={sz} style={{display:"block",borderRadius:6}}/></div>
           <button onClick={()=>setBig(b=>!b)} style={{fontSize:12,fontWeight:700,color:"#2dd4bf",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>{big?"← Smaller":"Larger QR"}</button>
-          <p style={{fontSize:11,color:"#1e293b",wordBreak:"break-all",textAlign:"center",margin:0}}>{url}</p>
+          <p style={{fontSize:11,color:"var(--ct6)",wordBreak:"break-all",textAlign:"center",margin:0}}>{url}</p>
         </div>
         <div className="card au" style={{padding:"20px"}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 10px"}}>Flyer preview</p>
-          <p style={{fontSize:17,fontWeight:900,color:"#f1f5f9",margin:"0 0 6px",lineHeight:1.3}}>{t(lang,"sh_head")}</p>
-          <p style={{fontSize:13,color:"#64748b",margin:"0 0 8px",lineHeight:1.6}}>{t(lang,"sh_body")}</p>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct5)",margin:"0 0 10px"}}>Flyer preview</p>
+          <p style={{fontSize:17,fontWeight:900,color:"var(--ct1)",margin:"0 0 6px",lineHeight:1.3}}>{t(lang,"sh_head")}</p>
+          <p style={{fontSize:13,color:"var(--ct3)",margin:"0 0 8px",lineHeight:1.6}}>{t(lang,"sh_body")}</p>
           <p style={{fontSize:13,fontWeight:800,background:"linear-gradient(135deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:"0 0 10px"}}>{t(lang,"sh_url")}</p>
-          <p style={{fontSize:11,color:"#334155",margin:0,lineHeight:1.6}}>{t(lang,"sh_places")}</p>
+          <p style={{fontSize:11,color:"var(--ct5)",margin:0,lineHeight:1.6}}>{t(lang,"sh_places")}</p>
         </div>
       </div>
       <div className="no-print" style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -884,56 +902,82 @@ function Landing({lang,onStart,onNav}){
   return(
     <div style={{display:"flex",flexDirection:"column",gap:24,paddingBottom:80}}>
       {/* Hero */}
-      <div style={{borderRadius:16,overflow:"hidden",background:"#0c1624",border:"1px solid rgba(255,255,255,.05)",padding:"40px 28px",position:"relative"}}>
-        <div style={{position:"absolute",top:0,right:0,width:"55%",height:"100%",pointerEvents:"none",background:"radial-gradient(ellipse 80% 100% at 100% 50%,rgba(13,148,136,.08),transparent)"}}/>
-        <div style={{position:"relative",maxWidth:580}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(45,212,191,.08)",border:"1px solid rgba(45,212,191,.18)",borderRadius:100,padding:"5px 12px",marginBottom:20}}>
+      <div style={{borderRadius:20,overflow:"hidden",background:"var(--cbg2)",border:"1px solid var(--cborder)",position:"relative",minHeight:360,display:"flex",alignItems:"stretch"}}>
+        {/* Background glow */}
+        <div style={{position:"absolute",inset:0,pointerEvents:"none",background:"radial-gradient(ellipse 60% 80% at 20% 50%,rgba(13,148,136,.12),transparent),radial-gradient(ellipse 40% 60% at 80% 20%,rgba(56,189,248,.07),transparent)"}}/>
+        {/* Left: text */}
+        <div style={{position:"relative",flex:"1 1 340px",padding:"52px 44px",display:"flex",flexDirection:"column",justifyContent:"center",zIndex:1}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(45,212,191,.1)",border:"1px solid rgba(45,212,191,.22)",borderRadius:100,padding:"5px 14px",marginBottom:22,alignSelf:"flex-start"}}>
             <span style={{width:6,height:6,borderRadius:"50%",background:"#2dd4bf",display:"inline-block",animation:"pulse-glow 2s infinite"}}/>
-            <span style={{fontSize:11,fontWeight:800,color:"#2dd4bf",letterSpacing:".05em"}}>{t(lang,"badge")}</span>
+            <span style={{fontSize:11,fontWeight:800,color:"#2dd4bf",letterSpacing:".06em"}}>{t(lang,"badge")}</span>
           </div>
-          <h1 style={{fontSize:28,fontWeight:900,color:"#f8fafc",margin:"0 0 14px",lineHeight:1.25}}>{t(lang,"title")}</h1>
-          <p style={{fontSize:14,color:"#64748b",margin:"0 0 28px",lineHeight:1.8}}>{t(lang,"sub")}</p>
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:28}}>
-            <button onClick={onStart} className="btn btn-primary" style={{fontSize:15,padding:"14px 24px"}}>{t(lang,"start")}</button>
-            <button onClick={onNav} className="btn btn-secondary" style={{fontSize:14}}>{t(lang,"nav_cta")}</button>
+          <h1 style={{fontSize:36,fontWeight:900,color:"var(--ct1)",margin:"0 0 6px",lineHeight:1.15,letterSpacing:"-.02em"}}>{lang==="en"?"Find benefits":"Encuentra beneficios"}</h1>
+          <h1 style={{fontSize:36,fontWeight:900,margin:"0 0 18px",lineHeight:1.15,letterSpacing:"-.02em",background:"linear-gradient(90deg,#2dd4bf,#38bdf8)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{lang==="en"?"you qualify for.":"que te corresponden."}</h1>
+          <p style={{fontSize:14,color:"var(--ct3)",margin:"0 0 32px",lineHeight:1.75,maxWidth:400}}>{lang==="en"?"Calify checks your household against 10 California assistance programs in 2 minutes — and shows only the ones you match. Free, private, no account needed.":"Calify evalúa tu hogar contra 10 programas de asistencia de California en 2 minutos — y solo muestra los que aplican. Gratis, privado, sin cuenta."}</p>
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:24,alignItems:"flex-start"}}>
+            <button onClick={onStart} className="btn btn-primary" style={{fontSize:15,padding:"14px 28px",borderRadius:12}}>{t(lang,"start")}</button>
+            <button onClick={onNav} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:13,color:"var(--ct4)",padding:"2px 0",textDecoration:"underline",textUnderlineOffset:3}}>{t(lang,"nav_cta")}</button>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:7}}>
-            {[t(lang,"priv"),t(lang,"immig"),t(lang,"free")].map((txt,i)=>(
-              <p key={i} style={{fontSize:12,color:"#334155",margin:0,lineHeight:1.5}}>{txt}{i===1&&<a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{color:"#2dd4bf",marginLeft:6,fontWeight:700}}>{t(lang,"immig_link")}</a>}</p>
+          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+            {[[
+              <svg key="a" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+              t(lang,"priv")
+            ],[
+              <svg key="b" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+              <span key="bt">{t(lang,"immig")} <a href="https://www.uscis.gov/green-card/green-card-processes-and-procedures/public-charge" target="_blank" rel="noopener noreferrer" style={{color:"#2dd4bf",fontWeight:700}}>{t(lang,"immig_link")}</a></span>
+            ],[
+              <svg key="c" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+              t(lang,"free")
+            ]].map(([icon,label],i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:8}}>
+                <span style={{flexShrink:0}}>{icon}</span>
+                <span style={{fontSize:12,color:"var(--ct5)",lineHeight:1.4}}>{label}</span>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* What is Calify */}
-      <div className="card au" style={{padding:"22px 24px"}}>
-        <h2 style={{fontSize:16,fontWeight:800,color:"#e2e8f0",margin:"0 0 10px"}}>{t(lang,"what_is")}</h2>
-        <p style={{fontSize:14,color:"#64748b",margin:0,lineHeight:1.8}}>{t(lang,"what_body")}</p>
+        {/* Right: photo */}
+        <div style={{flex:"0 0 340px",position:"relative",overflow:"hidden",minHeight:360}}>
+          {/* fade left edge into card bg */}
+          <div style={{position:"absolute",inset:0,zIndex:2,background:"linear-gradient(to right,var(--cbg2) 0%,transparent 28%)"}}/>
+          {/* subtle dark overlay so text legibility isn't hurt */}
+          <div style={{position:"absolute",inset:0,zIndex:1,background:"rgba(6,11,21,.35)"}}/>
+          <img
+            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=680&q=80&auto=format&fit=crop"
+            alt="Diverse community members"
+            style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top"}}
+          />
+          {/* floating stat pill */}
+          <div style={{position:"absolute",bottom:28,right:24,zIndex:3,background:"rgba(6,11,21,.82)",backdropFilter:"blur(12px)",border:"1px solid rgba(45,212,191,.25)",borderRadius:14,padding:"12px 18px",textAlign:"center"}}>
+            <div style={{fontSize:22,fontWeight:900,color:"#2dd4bf",lineHeight:1}}>10</div>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(148,163,184,.8)",marginTop:3,letterSpacing:".04em",textTransform:"uppercase"}}>programs checked</div>
+          </div>
+        </div>
       </div>
 
       {/* How it works + trust */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:12}}>
         <HowCard lang={lang} title={t(lang,"how_h_title")} steps={[t(lang,"how_h_1"),t(lang,"how_h_2"),t(lang,"how_h_3")]} note={t(lang,"how_h_note")}/>
         <div className="surface au" style={{padding:"18px 20px"}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#1e293b",margin:"0 0 14px"}}>{lang==="en"?"Who is this for?":"¿Para quién es esto?"}</p>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct6)",margin:"0 0 14px"}}>{lang==="en"?"Who is this for?":"¿Para quién es esto?"}</p>
           {(lang==="en"?[
-            {e:"🏠",t:"Renters and homeowners with low-to-moderate income"},
-            {e:"👨‍👩‍👧",t:"Families with children of any age"},
-            {e:"🤰",t:"Pregnant individuals or new parents"},
-            {e:"👴",t:"Seniors 60 and older"},
-            {e:"♿",t:"People with disabilities"},
-            {e:"🌎",t:"Immigrants — documented and undocumented"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,t:"Renters and homeowners with low-to-moderate income"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,t:"Families with children of any age"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,t:"Pregnant individuals or new parents"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>,t:"Seniors 60 and older"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,t:"People with disabilities"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,t:"Immigrants — documented and undocumented"},
           ]:[
-            {e:"🏠",t:"Personas que rentan o son dueñas de casa con ingresos bajos"},
-            {e:"👨‍👩‍👧",t:"Familias con hijos de cualquier edad"},
-            {e:"🤰",t:"Embarazadas o nuevos padres"},
-            {e:"👴",t:"Personas de 60 años o más"},
-            {e:"♿",t:"Personas con discapacidades"},
-            {e:"🌎",t:"Inmigrantes — documentados e indocumentados"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,t:"Personas que rentan o son dueñas de casa con ingresos bajos"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,t:"Familias con hijos de cualquier edad"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,t:"Embarazadas o nuevos padres"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>,t:"Personas de 60 años o más"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,t:"Personas con discapacidades"},
+            {icon:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,t:"Inmigrantes — documentados e indocumentados"},
           ]).map((r,i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:9,marginBottom:i<5?8:0}}>
-              <span style={{fontSize:14,flexShrink:0}}>{r.e}</span>
-              <span style={{fontSize:13,color:"#475569",lineHeight:1.4}}>{r.t}</span>
+              <span style={{flexShrink:0,display:"flex",alignItems:"center"}}>{r.icon}</span>
+              <span style={{fontSize:13,color:"var(--ct4)",lineHeight:1.4}}>{r.t}</span>
             </div>
           ))}
         </div>
@@ -942,8 +986,8 @@ function Landing({lang,onStart,onNav}){
       {/* Programs grid */}
       <div>
         <div style={{marginBottom:14}}>
-          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"#334155",margin:"0 0 4px"}}>{t(lang,"programs")}</p>
-          <p style={{fontSize:13,color:"#334155",margin:0}}>{lang==="en"?"We instantly check your household against all 10 of these — you only see the ones you match.":"Evaluamos tu hogar contra los 10 programas al instante — solo ves los que aplican."}</p>
+          <p style={{fontSize:11,fontWeight:800,letterSpacing:".08em",textTransform:"uppercase",color:"var(--ct5)",margin:"0 0 4px"}}>{t(lang,"programs")}</p>
+          <p style={{fontSize:13,color:"var(--ct5)",margin:0}}>{lang==="en"?"We instantly check your household against all 10 of these — you only see the ones you match.":"Evaluamos tu hogar contra los 10 programas al instante — solo ves los que aplican."}</p>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8}}>
           {PROGS.map((p,i)=>{
@@ -961,13 +1005,7 @@ function Landing({lang,onStart,onNav}){
               coveredca:{en:"Low-cost health insurance if you earn too much for Medi-Cal",es:"Seguro de salud asequible si ganas demasiado para Medi-Cal"},
             }[p.id]||{en:"",es:""};
             return(
-              <div key={p.id} className={`au d${Math.min(i+1,6)}`} style={{background:"rgba(255,255,255,.025)",border:`1px solid rgba(255,255,255,.06)`,borderLeft:`3px solid ${cc}`,borderRadius:11,padding:"12px 14px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
-                  <span style={{fontSize:18,flexShrink:0}}>{p.icon}</span>
-                  <div style={{fontSize:12,fontWeight:800,color:cc}}>{p.name[lang]||p.name.en}</div>
-                </div>
-                <div style={{fontSize:12,color:"#334155",lineHeight:1.5}}>{tagline[lang]||tagline.en}</div>
-              </div>
+              <ProgCard key={p.id} p={p} i={i} lang={lang} cc={cc} tagline={tagline}/>
             );
           })}
         </div>
@@ -976,91 +1014,66 @@ function Landing({lang,onStart,onNav}){
   );
 }
 
+// ── PROGRAM CARD (landing grid) ───────────────────────────────
+function ProgCard({p,i,lang,cc,tagline}){
+  const[hov,setHov]=useState(false);
+  return(
+    <div
+      key={p.id}
+      className={`au d${Math.min(i+1,6)}`}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      style={{background:hov?`${cc}10`:"var(--cov1)",border:`1px solid ${hov?cc+"44":"var(--cborder)"}`,borderRadius:11,padding:"12px 14px",cursor:"default",transition:"background .18s,border-color .18s"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:hov?8:5}}>
+        <div style={{fontSize:12,fontWeight:800,color:hov?cc:"var(--ct1)",transition:"color .18s"}}>{p.name[lang]||p.name.en}</div>
+        <div style={{fontSize:9,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:cc,opacity:.8,flexShrink:0}}>{p.cat}</div>
+      </div>
+      <div style={{fontSize:12,color:"var(--ct5)",lineHeight:1.5}}>{tagline[lang]||tagline.en}</div>
+      {hov&&<div style={{marginTop:8,paddingTop:8,borderTop:`1px solid ${cc}22`,fontSize:12,color:"var(--ct3)",lineHeight:1.6}}>{p.desc[lang]||p.desc.en}</div>}
+    </div>
+  );
+}
+
 // ── SIDEBAR ───────────────────────────────────────────────────
-function Sidebar({lang,view,mode,user,onHome,onNav,onShare,onLogin,onLogout,setLang}){
+function Sidebar({lang,view,mode,onHome,onNav,onShare}){
   return(
     <aside className="sidebar no-print">
-      {/* Logo */}
-      <div style={{padding:"8px 12px 16px",borderBottom:"1px solid rgba(255,255,255,.06)",marginBottom:8}}>
-        <button onClick={onHome} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",padding:0,textAlign:"left"}}>
-          <div style={{fontSize:19,fontWeight:900,letterSpacing:"-.04em",color:"#f8fafc"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></div>
-          <div style={{fontSize:11,color:"#334155",marginTop:3}}>{t(lang,"tagline")}</div>
-        </button>
-      </div>
-
-      {/* Navigation */}
+      {/* Navigation only — logo, lang, login are in the header */}
       <button onClick={onHome} className={`snav${(view==="landing"||view==="quest"||view==="results")&&mode==="hh"?" active":""}`}>
-        <div className="snav-icon" style={{background:"rgba(52,211,153,.12)"}} >🏠</div>
+        <div className="snav-icon" style={{background:"rgba(52,211,153,.12)"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
         <span>{t(lang,"sidebar_household")}</span>
       </button>
       <button onClick={onNav} className={`snav${mode==="nav"?" active":""}`}>
-        <div className="snav-icon" style={{background:"rgba(56,189,248,.12)"}}>🧭</div>
+        <div className="snav-icon" style={{background:"rgba(56,189,248,.12)"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
         <span>{t(lang,"sidebar_navigator")}</span>
       </button>
       <button onClick={onShare} className={`snav${view==="share"?" active":""}`}>
-        <div className="snav-icon" style={{background:"rgba(167,139,250,.12)"}}>📤</div>
+        <div className="snav-icon" style={{background:"rgba(167,139,250,.12)"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
         <span>{t(lang,"sidebar_share")}</span>
       </button>
-
-      <div style={{flex:1}}/>
-
-      {/* Programs quick list */}
-      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:14,marginTop:8}}>
-        <div style={{padding:"0 12px",marginBottom:12}}>
-          <p style={{fontSize:10,fontWeight:900,letterSpacing:".1em",textTransform:"uppercase",color:"#1e293b",margin:"0 0 5px"}}>{lang==="en"?"Programs we screen":"Programas que evaluamos"}</p>
-          <p style={{fontSize:11,color:"#1e293b",margin:0,lineHeight:1.5}}>{lang==="en"?"10 California programs checked instantly against your answers.":"10 programas de California evaluados al instante."}</p>
-        </div>
-        {PROGS.map(p=>{
-          const cc=CAT_COLOR[p.cat]||"#2dd4bf";
-          const tagline={
-            calfresh:{en:"Grocery benefits on EBT card",es:"Beneficios de comida en tarjeta EBT"},
-            wic:{en:"Food + support for moms & kids under 5",es:"Comida y apoyo para mamás e hijos menores de 5"},
-            medic:{en:"Free/low-cost doctor, dental, vision",es:"Médico, dental y visión gratis o bajo costo"},
-            eitc:{en:"Up to $12K back at tax time",es:"Hasta $12K de regreso al declarar impuestos"},
-            liheap:{en:"Help paying electricity or gas bills",es:"Ayuda para pagar luz o gas"},
-            care:{en:"20–35% off your utility bill",es:"20–35% de descuento en tu recibo de servicios"},
-            lifeline:{en:"Discounted phone or internet",es:"Teléfono o internet con descuento"},
-            calworks:{en:"Monthly cash + job support for families",es:"Efectivo mensual y apoyo laboral para familias"},
-            ssi:{en:"Monthly cash for seniors or disabled",es:"Efectivo mensual para mayores o discapacitados"},
-            coveredca:{en:"Subsidized health insurance",es:"Seguro de salud subsidiado"},
-          }[p.id]||{en:"",es:""};
-          return(
-            <div key={p.id} style={{display:"flex",alignItems:"flex-start",gap:9,padding:"7px 12px",borderRadius:8,borderLeft:`2px solid ${cc}22`,marginBottom:2}}>
-              <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{p.icon}</span>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#475569",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name[lang]||p.name.en}</div>
-                <div style={{fontSize:10,color:"#1e293b",marginTop:1,lineHeight:1.4}}>{tagline[lang]||tagline.en}</div>
-              </div>
-              <div style={{width:5,height:5,borderRadius:"50%",background:cc,flexShrink:0,marginTop:5}}/>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Auth + lang */}
-      <div style={{borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:12,marginTop:8,display:"flex",flexDirection:"column",gap:8}}>
-        <LangDropdown lang={lang} setLang={setLang}/>
-        {user?(
-          <div style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0"}}>
-            <div style={{width:28,height:28,borderRadius:"50%",background:"linear-gradient(135deg,#0d9488,#0891b2)",color:"#fff",fontSize:11,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{user.name[0].toUpperCase()}</div>
-            <div style={{flex:1,minWidth:0}}><p style={{fontSize:11,fontWeight:700,color:"#e2e8f0",margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name}</p></div>
-            <button onClick={onLogout} style={{fontSize:11,color:"#ef4444",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{t(lang,"logout")}</button>
-          </div>
-        ):(
-          <button onClick={onLogin} className="btn btn-secondary btn-sm" style={{width:"100%"}}>{t(lang,"login")}</button>
-        )}
-      </div>
     </aside>
   );
 }
 
 // ── HEADER ────────────────────────────────────────────────────
-function Header({lang,setLang,user,onHome,onLogin,onLogout}){
+function Header({lang,setLang,user,dark,setDark,onHome,onLogin,onLogout}){
   return(
-    <header className="no-print" style={{position:"sticky",top:0,zIndex:90,background:"rgba(6,11,21,.96)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(255,255,255,.04)",padding:"11px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
-      <button onClick={onHome} style={{fontSize:17,fontWeight:900,letterSpacing:"-.03em",color:"#f8fafc",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></button>
+    <header className="no-print" style={{position:"sticky",top:0,zIndex:90,background:dark?"rgba(6,11,21,.96)":"rgba(248,250,252,.96)",backdropFilter:"blur(20px)",borderBottom:dark?"1px solid rgba(255,255,255,.04)":"1px solid rgba(0,0,0,.08)",padding:"11px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+      <button onClick={onHome} style={{fontSize:17,fontWeight:900,letterSpacing:"-.03em",color:dark?"var(--ct1)":"var(--ct1)",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></button>
       <div style={{display:"flex",alignItems:"center",gap:8}}>
         <LangDropdown lang={lang} setLang={setLang}/>
+        <button
+          onClick={()=>setDark(d=>!d)}
+          title={dark?"Switch to light mode":"Switch to dark mode"}
+          className="btn btn-secondary btn-sm">
+          {dark?"Light":"Dark"}
+        </button>
         {user?<UserMenu lang={lang} user={user} onLogout={onLogout}/>:<button onClick={onLogin} className="btn btn-secondary btn-sm">{t(lang,"login")}</button>}
       </div>
     </header>
@@ -1075,16 +1088,16 @@ function MobileBar({lang,view,mode,onHome,onNav,onShare}){
   return(
     <nav className="mobile-bar">
       <button onClick={onHome} className={`mobile-bar-btn${hh?" active":""}`}>
-        <span>🏠</span><span>{t(lang,"hh_mode")}</span>
+        <span>{t(lang,"hh_mode")}</span>
       </button>
       <button onClick={()=>{}} className={`mobile-bar-btn${!hh&&!nav&&!sh?" active":""}`} style={{opacity:.4,cursor:"default"}}>
-        <span>📋</span><span>Results</span>
+        <span>Results</span>
       </button>
       <button onClick={onNav} className={`mobile-bar-btn${nav?" active":""}`}>
-        <span>🧭</span><span>{lang==="en"?"Navigate":"Navegar"}</span>
+        <span>{lang==="en"?"Navigate":"Navegar"}</span>
       </button>
       <button onClick={onShare} className={`mobile-bar-btn${sh?" active":""}`}>
-        <span>📤</span><span>{t(lang,"share")}</span>
+        <span>{t(lang,"share")}</span>
       </button>
     </nav>
   );
@@ -1093,6 +1106,7 @@ function MobileBar({lang,view,mode,onHome,onNav,onShare}){
 // ── APP ───────────────────────────────────────────────────────
 function App(){
   const[lang,setLang]=useState("en");
+  const[dark,setDark]=useState(()=>{try{return localStorage.getItem("c_dark")!=="0";}catch{return true;}});
   const[view,setView]=useState("landing");
   const[mode,setMode]=useState("hh");
   const[ans,setAns]=useState(null);
@@ -1102,6 +1116,7 @@ function App(){
   const[authOpen,setAuthOpen]=useState(false);
   const[authTab,setAuthTab]=useState("login");
   useEffect(()=>{document.documentElement.lang=lang;},[lang]);
+  useEffect(()=>{document.body.className=dark?"":"light";try{localStorage.setItem("c_dark",dark?"1":"0");}catch{};},[dark]);
   const onDone=useCallback(a=>{setAns(a);setProgs(screen(a));setLogged(false);setView("results");},[]);
   const logHH=useCallback(()=>{if(user)LS.addSession(user.id,1);setLogged(true);},[user]);
   const doAuth=u=>{setUser(u);setAuthOpen(false);};
@@ -1111,10 +1126,10 @@ function App(){
   const goHome=()=>{setMode("hh");setView("landing");};
   return(
     <div className="app-shell">
-      <Header lang={lang} setLang={setLang} user={user} onHome={goHome} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
+      <Header lang={lang} setLang={setLang} user={user} dark={dark} setDark={setDark} onHome={goHome} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
       <div className="app-body">
-        <Sidebar lang={lang} setLang={setLang} view={view} mode={mode} user={user}
-          onHome={goHome} onNav={goNav} onShare={()=>setView("share")} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
+        <Sidebar lang={lang} view={view} mode={mode}
+          onHome={goHome} onNav={goNav} onShare={()=>setView("share")}/>
         <main className="main-col has-mobile-bar">
           {view==="landing"&&<Landing lang={lang} onStart={()=>setView("quest")} onNav={goNav}/>}
           {view==="quest"&&<Questionnaire lang={lang} onDone={onDone}/>}
