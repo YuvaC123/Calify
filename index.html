@@ -591,6 +591,7 @@ function AuthModal({lang,tab:initTab,onAuth,onClose}){
   const[f,setF]=useState({name:"",email:"",pw:"",conf:""});
   const[err,setErr]=useState("");
   const[shk,setShk]=useState(false);
+  const[done,setDone]=useState(null); // {user, isNew}
   const set=(k,v)=>setF(p=>({...p,[k]:v}));
   const score=pwScore(f.pw);
   const bad=msg=>{setErr(msg);setShk(true);setTimeout(()=>setShk(false),400);};
@@ -601,13 +602,29 @@ function AuthModal({lang,tab:initTab,onAuth,onClose}){
       if(f.pw.length<8)return bad(t(lang,"pw_short"));
       if(f.pw!==f.conf)return bad(t(lang,"pw_mismatch"));
       const r=doSignup({name:f.name.trim(),email:f.email.trim(),password:f.pw});
-      if(r.err)return bad(r.err);onAuth(r.user);
+      if(r.err)return bad(r.err);
+      setDone({user:r.user,isNew:true});
+      setTimeout(()=>onAuth(r.user),1800);
     }else{
       const r=doLogin({email:f.email.trim(),password:f.pw});
       if(r.err)return bad(r.err);onAuth(r.user);
     }
   };
   const IL={fontSize:11,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",color:"var(--ct5)",display:"block",marginBottom:6};
+  if(done){
+    return(
+      <div className="modal-bg">
+        <div className="modal au" style={{padding:"36px 28px",display:"flex",flexDirection:"column",alignItems:"center",gap:14,textAlign:"center"}}>
+          <div style={{width:56,height:56,borderRadius:"50%",background:"linear-gradient(135deg,#0d9488,#0891b2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:26}}>✓</div>
+          <div>
+            <p style={{fontSize:17,fontWeight:900,color:"var(--ct1)",margin:"0 0 6px"}}>Account created!</p>
+            <p style={{fontSize:13,color:"var(--ct4)",margin:0}}>Saved as <strong style={{color:"var(--ct1)"}}>{done.user.email}</strong></p>
+            <p style={{fontSize:12,color:"var(--ct5)",marginTop:8,lineHeight:1.6}}>You can log back in with this email anytime. Signing you in now…</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return(
     <div className="modal-bg" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
       <div className="modal">
@@ -1062,7 +1079,7 @@ function Sidebar({lang,view,mode,onHome,onNav,onShare}){
 }
 
 // ── HEADER ────────────────────────────────────────────────────
-function Header({lang,setLang,user,dark,setDark,onHome,onLogin,onLogout}){
+function Header({lang,setLang,user,dark,setDark,onHome,onLogin,onSignup,onLogout}){
   return(
     <header className="no-print" style={{position:"sticky",top:0,zIndex:90,background:dark?"rgba(6,11,21,.96)":"rgba(248,250,252,.96)",backdropFilter:"blur(20px)",borderBottom:dark?"1px solid rgba(255,255,255,.04)":"1px solid rgba(0,0,0,.08)",padding:"11px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
       <button onClick={onHome} style={{fontSize:17,fontWeight:900,letterSpacing:"-.03em",color:dark?"var(--ct1)":"var(--ct1)",background:"none",border:"none",cursor:"pointer",fontFamily:"inherit"}}>Calify<span style={{color:"#2dd4bf"}}>.</span></button>
@@ -1074,7 +1091,7 @@ function Header({lang,setLang,user,dark,setDark,onHome,onLogin,onLogout}){
           className="btn btn-secondary btn-sm">
           {dark?"Light":"Dark"}
         </button>
-        {user?<UserMenu lang={lang} user={user} onLogout={onLogout}/>:<button onClick={onLogin} className="btn btn-secondary btn-sm">{t(lang,"login")}</button>}
+        {user?<UserMenu lang={lang} user={user} onLogout={onLogout}/>:<><button onClick={onLogin} className="btn btn-secondary btn-sm">{t(lang,"login")}</button><button onClick={onSignup} className="btn btn-primary btn-sm">{t(lang,"signup")}</button></>}
       </div>
     </header>
   );
@@ -1126,7 +1143,7 @@ function App(){
   const goHome=()=>{setMode("hh");setView("landing");};
   return(
     <div className="app-shell">
-      <Header lang={lang} setLang={setLang} user={user} dark={dark} setDark={setDark} onHome={goHome} onLogin={()=>openAuth("login")} onLogout={doLogout}/>
+      <Header lang={lang} setLang={setLang} user={user} dark={dark} setDark={setDark} onHome={goHome} onLogin={()=>openAuth("login")} onSignup={()=>openAuth("signup")} onLogout={doLogout}/>
       <div className="app-body">
         <Sidebar lang={lang} view={view} mode={mode}
           onHome={goHome} onNav={goNav} onShare={()=>setView("share")}/>
